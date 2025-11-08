@@ -46,6 +46,9 @@ flowchart LR
 - You can re‑run `bin/sdd-prompts` anytime — it inlines latest context into the agent prompt.
 - Web search stays manual by design; paste results into files.
 
+## Example Project
+A great example of SDD in action is the [TR-808 Synth](https://github.com/chernistry/tr808ish) project - a drum sequencer created with AI in about 30 minutes using the SDD methodology. This project demonstrates how SDD enables rapid development of functional applications with quality code, comprehensive testing, and proper architecture.
+
 ## License
 MIT
 
