@@ -1,0 +1,80 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Simple SDD task scaffold script
+# Usage: bin/sdd-scaffold <task-name> [--stack "Python/FastAPI/PostgreSQL"] [--domain "web"] [--year 2025]
+
+if [[ $# -lt 1 ]]; then
+  echo "Usage: $0 <task-name> [--stack STR] [--domain STR] [--year YYYY]" >&2
+  exit 1
+fi
+
+TASK_NAME="${1}"; shift || true
+STACK=""
+DOMAIN=""
+YEAR="$(date +%Y)"
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --stack)
+      STACK="$2"; shift 2;;
+    --domain)
+      DOMAIN="$2"; shift 2;;
+    --year)
+      YEAR="$2"; shift 2;;
+    *)
+      echo "Unknown option: $1" >&2; exit 1;;
+  esac
+done
+
+ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+TASK_DIR="$ROOT_DIR/tasks/$TASK_NAME"
+
+if [[ -e "$TASK_DIR" ]]; then
+  echo "Error: $TASK_DIR already exists" >&2
+  exit 1
+fi
+
+mkdir -p "$TASK_DIR"/input "$TASK_DIR"/research "$TASK_DIR"/spec "$TASK_DIR"/prompts "$TASK_DIR"/agent
+
+cat > "$TASK_DIR/config.json" <<JSON
+{
+  "project_name": "$TASK_NAME",
+  "tech_stack": "$STACK",
+  "domain": "$DOMAIN",
+  "year": "$YEAR"
+}
+JSON
+
+cat > "$TASK_DIR/README.md" <<MD
+# $TASK_NAME (SDD Task)
+
+Папка с заготовками для Spec-Driven Development.
+
+- Описание проекта: 
+  - Редактируй: input/project.md
+- Промпты для AI:
+  - Сгенерируй: ../../bin/sdd-prompts "$TASK_DIR"
+- Результаты ресерча:
+  - research/best_practices.md
+- Спеки:
+  - spec/architect.md
+  - spec/coding_rules.md
+- Агент:
+  - agent/agent.md (после генерации/сборки)
+
+Порядок работы см. в корневом intro.md.
+MD
+
+cat > "$TASK_DIR/input/project.md" <<MD
+# Описание проекта
+
+Кратко опиши задачу/проект: цели, ограничения, аудитория. Можно начать с 3-5 предложений.
+
+- Основная цель: ...
+- Пользователи/персоны: ...
+- Ключевые ограничения: ...
+- Результат/критерии готовности: ...
+MD
+
+echo "✅ Scaffold created at $TASK_DIR"
