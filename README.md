@@ -45,7 +45,6 @@ flowchart LR
 ## Notes
 - You can re‑run `bin/sdd-prompts` anytime — it inlines latest context into the agent prompt.
 - Web search stays manual by design; paste results into files.
-- Legacy flow `bin/sdd-scaffold` (tasks/<name>) is still supported, but single‑project mode is simpler.
 
 ## License
 MIT

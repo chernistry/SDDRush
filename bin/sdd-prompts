@@ -26,7 +26,7 @@ def render_template(tpl: str, values: dict) -> str:
 
 def main():
     if len(sys.argv) != 2:
-        print("Usage: bin/sdd-prompts <path>  (either tasks/<name> dir or a project root with .sdd)", file=sys.stderr)
+        print("Usage: bin/sdd-prompts <project-root-with-.sdd>", file=sys.stderr)
         sys.exit(1)
 
     base = Path(sys.argv[1]).resolve()
@@ -34,46 +34,27 @@ def main():
         print(f"Not found: {base}", file=sys.stderr)
         sys.exit(1)
 
-    # Detect mode
-    is_single_project = (base / ".sdd").exists()
-    if is_single_project:
-        project_root = base
-        sdd_dir = project_root / ".sdd"
-        templates_dir = Path(__file__).resolve().parent.parent / "templates"
-        cfg_path = sdd_dir / "config.json"
-        if not cfg_path.exists():
-            print(f"Missing config: {cfg_path}", file=sys.stderr)
-            sys.exit(1)
-        cfg = json.loads(cfg_path.read_text())
-        project_name = cfg.get("project_name", project_root.name)
-        tech_stack = cfg.get("tech_stack", "")
-        domain = cfg.get("domain", "")
-        year = cfg.get("year", str(datetime.now().year))
+    sdd_dir = base / ".sdd"
+    if not sdd_dir.exists():
+        print("Error: .sdd directory not found. Run bin/sdd-init in your project first.", file=sys.stderr)
+        sys.exit(1)
 
-        project_md = read_text(sdd_dir / "project.md")
-        best_practices_md = read_text(sdd_dir / "best_practices.md") or "TODO: paste research results here"
-        architect_md = read_text(sdd_dir / "architect.md") or "TODO: paste the generated architecture specification here"
-        coding_rules_md = read_text(sdd_dir / "coding_rules.md") or "TODO: paste the generated coding rules here"
-        prompts_dir = sdd_dir / "prompts"
-    else:
-        task_dir = base
-        project_root = task_dir.parent.parent  # .. / .. from tasks/<name>
-        templates_dir = project_root / "templates"
-        cfg_path = task_dir / "config.json"
-        if not cfg_path.exists():
-            print(f"Missing config: {cfg_path}", file=sys.stderr)
-            sys.exit(1)
-        cfg = json.loads(cfg_path.read_text())
-        project_name = cfg.get("project_name", task_dir.name)
-        tech_stack = cfg.get("tech_stack", "")
-        domain = cfg.get("domain", "")
-        year = cfg.get("year", str(datetime.now().year))
+    templates_dir = Path(__file__).resolve().parent.parent / "templates"
+    cfg_path = sdd_dir / "config.json"
+    if not cfg_path.exists():
+        print(f"Missing config: {cfg_path}", file=sys.stderr)
+        sys.exit(1)
+    cfg = json.loads(cfg_path.read_text())
+    project_name = cfg.get("project_name", base.name)
+    tech_stack = cfg.get("tech_stack", "")
+    domain = cfg.get("domain", "")
+    year = cfg.get("year", str(datetime.now().year))
 
-        project_md = read_text(task_dir / "input" / "project.md")
-        best_practices_md = read_text(task_dir / "research" / "best_practices.md") or "TODO: paste research results here"
-        architect_md = read_text(task_dir / "spec" / "architect.md") or "TODO: paste the generated architecture specification here"
-        coding_rules_md = read_text(task_dir / "spec" / "coding_rules.md") or "TODO: paste the generated coding rules here"
-        prompts_dir = task_dir / "prompts"
+    project_md = read_text(sdd_dir / "project.md")
+    best_practices_md = read_text(sdd_dir / "best_practices.md") or "TODO: paste research results here"
+    architect_md = read_text(sdd_dir / "architect.md") or "TODO: paste the generated architecture specification here"
+    coding_rules_md = read_text(sdd_dir / "coding_rules.md") or "TODO: paste the generated coding rules here"
+    prompts_dir = sdd_dir / "prompts"
 
     base_values = {
         "PROJECT_NAME": project_name,

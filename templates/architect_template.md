@@ -82,13 +82,8 @@ Output Structure (Markdown):
 
 ## Backlog (Tickets)
 - Break the work into tickets with clear dependencies and DoD.
-- File structure:
-  - Single‑project: `backlog/open/<nn>-<kebab>.md`
-  - Legacy tasks/: `tasks/<name>/backlog/open/<nn>-<kebab>.md`
-- Ticket format (each file):
-  - Title, Objective, Acceptance Criteria (DoD)
-  - Steps (concrete), Affected files, Tests, Risks
-  - Dependencies: [ticket ids]
+- File structure: `backlog/open/<nn>-<kebab>.md`
+- Ticket format (each file): Title, Objective, DoD, Steps (concrete), Affected files, Tests, Risks, Dependencies.
 
 ## Interfaces & Contracts
 - API endpoints/functions: input/output schemas, error shapes, versioning.

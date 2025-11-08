@@ -13,7 +13,6 @@ What’s here
 - `templates/`: simple prompt templates (task solver, ideation, research, architect, coding rules, agent, adapt).
 - `bin/sdd-init`: initialize Single‑Project SDD in an existing project dir.
 - `bin/sdd-prompts`: render ready‑to‑paste prompts with context substitution.
-- (Legacy) `bin/sdd-scaffold`: scaffold a task in `tasks/<task>`.
 
 Minimal single‑project structure
 ```
