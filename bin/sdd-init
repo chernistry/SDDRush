@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Initialize Single-Project SDD layout inside an existing directory.
+# Usage: bin/sdd-init [<project-dir>] [--stack "Python/FastAPI"] [--domain "web"] [--year 2025]
+
+TARGET_DIR="$(pwd)"
+STACK=""
+DOMAIN=""
+YEAR="$(date +%Y)"
+
+maybe_dir="$1" || true
+if [[ "${maybe_dir:-}" != "" && "${maybe_dir:-}" != --* ]]; then
+  TARGET_DIR="$maybe_dir"
+  shift || true
+fi
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --stack) STACK="$2"; shift 2;;
+    --domain) DOMAIN="$2"; shift 2;;
+    --year) YEAR="$2"; shift 2;;
+    *) echo "Unknown option: $1" >&2; exit 1;;
+  esac
+done
+
+mkdir -p "$TARGET_DIR/.sdd/prompts" "$TARGET_DIR/backlog/open" "$TARGET_DIR/backlog/closed"
+
+PROJECT_NAME="$(basename "$TARGET_DIR")"
+
+cat > "$TARGET_DIR/.sdd/config.json" <<JSON
+{
+  "project_name": "$PROJECT_NAME",
+  "tech_stack": "$STACK",
+  "domain": "$DOMAIN",
+  "year": "$YEAR"
+}
+JSON
+
+if [[ ! -f "$TARGET_DIR/.sdd/project.md" ]]; then
+cat > "$TARGET_DIR/.sdd/project.md" <<MD
+# Project Description
+
+Briefly describe the task/project: goals, constraints, audience. 3–5 sentences is enough to start.
+
+- Primary goal: ...
+- Users/personas: ...
+- Key constraints: ...
+- Outcome / Definition of Done: ...
+MD
+fi
+
+echo "✅ SDD initialized in $TARGET_DIR (.sdd + backlog/)"

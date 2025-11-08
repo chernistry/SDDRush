@@ -80,6 +80,16 @@ Output Structure (Markdown):
 - Numbered, observable plan with concrete function names and signatures.
 - Include timeouts, retries, validation, and error shapes.
 
+## Backlog (Tickets)
+- Break the work into tickets with clear dependencies and DoD.
+- File structure:
+  - Single‑project: `backlog/open/<nn>-<kebab>.md`
+  - Legacy tasks/: `tasks/<name>/backlog/open/<nn>-<kebab>.md`
+- Ticket format (each file):
+  - Title, Objective, Acceptance Criteria (DoD)
+  - Steps (concrete), Affected files, Tests, Risks
+  - Dependencies: [ticket ids]
+
 ## Interfaces & Contracts
 - API endpoints/functions: input/output schemas, error shapes, versioning.
 - Compatibility strategy and migration notes.

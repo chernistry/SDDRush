@@ -30,6 +30,10 @@ Inline attachments to read:
 {{CODING_RULES_CONTENT}}
 ```
 
+## Backlog
+- Single‑project: read tickets under `backlog/open/` sorted by prefix `nn-` and dependency order.
+- Legacy tasks/: read under `tasks/<name>/backlog/open/`.
+
 Operating rules:
 - Always consult architecture and coding rules first.
 - Execute backlog tasks by dependency order.

@@ -19,19 +19,19 @@ flowchart LR
   G --> H[Code]
 ```
 
-## Quick Start
-- Scaffold a task
-  - `bash bin/sdd-scaffold my-website --stack "Python/FastAPI" --domain web`
+## Quick Start (recommended: single‑project mode)
+- Initialize inside a project directory
+  - `bash bin/sdd-init /path/to/project --stack "Node.js/Web Audio API" --domain audio`
 - Write the description
-  - Edit `tasks/my-website/input/project.md`
+  - Edit `/path/to/project/.sdd/project.md`
 - Render prompts
-  - `python bin/sdd-prompts tasks/my-website`
+  - `python bin/sdd-prompts /path/to/project`
 - Run in your agent
-  - Use `prompts/00_task_solver.prompt.md` (or `00_solution_ideation`) → `spec/solution_plan.md`
-  - `01_research` → paste to `research/best_practices.md`
-  - Re‑render → `02_architect` → `spec/architect.md`
-  - `03_coding_rules` → `spec/coding_rules.md`
-  - Re‑render → `04_agent` → `agent/agent.md` (optional)
+  - `00_task_solver` or `00_solution_ideation` → (optional) save plan
+  - `01_research` → paste to `.sdd/best_practices.md`
+  - Re‑render → `02_architect` → paste to `.sdd/architect.md` (includes Backlog tickets)
+  - `03_coding_rules` → paste to `.sdd/coding_rules.md`
+  - Re‑render → `04_agent` → implement tickets in `backlog/open/`
 
 ## Templates
 - `templates/task_solver_template.md` — solution designer with MCDM step
@@ -45,10 +45,10 @@ flowchart LR
 ## Notes
 - You can re‑run `bin/sdd-prompts` anytime — it inlines latest context into the agent prompt.
 - Web search stays manual by design; paste results into files.
+- Legacy flow `bin/sdd-scaffold` (tasks/<name>) is still supported, but single‑project mode is simpler.
 
 ## License
 MIT
 
 ## Tags
 spec-driven-development, prompt-engineering, ai-agents, software-architecture, templates, research, best-practices, automation, cli-tools, llm, developer-tools, engineering-workflows, multi-agent-systems, decision-making, mcdm
-
