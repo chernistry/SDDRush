@@ -4,7 +4,7 @@ Instruction for AI: craft a realistic solution and break it into a concise, veri
 
 Input:
 - Project: {{PROJECT_NAME}}
-- Description: {{PROJECT_DESCRIPTION}}
+- Description: {{PROJECT_DESCRIPTION_CONTENT}}
 - Domain: {{DOMAIN}}
 - Tech stack (if any): {{TECH_STACK}}
 - Year: {{YEAR}}

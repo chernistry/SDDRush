@@ -13,7 +13,7 @@ Adapt the prompt for project {{PROJECT_NAME}} with surgical edits:
 
 ## Project Context
 - Project: {{PROJECT_NAME}}
-- Description: {{PROJECT_DESCRIPTION}}
+- Description: {{PROJECT_DESCRIPTION_CONTENT}}
 - Stack: {{TECH_STACK}}
 - Domain: {{DOMAIN}}
 

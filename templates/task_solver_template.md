@@ -4,7 +4,7 @@ Role: Senior Solution Designer / Task Solver. Goal — quickly and clearly decid
 
 Input Context
 - Project: {{PROJECT_NAME}}
-- Description: {{PROJECT_DESCRIPTION}}
+- Description: {{PROJECT_DESCRIPTION_CONTENT}}
 - Domain: {{DOMAIN}}
 - Tech stack (if any): {{TECH_STACK}}
 - Year: {{YEAR}}

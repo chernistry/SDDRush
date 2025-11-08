@@ -6,7 +6,7 @@ Instruction for AI: produce a practical, evidence‑backed best practices guide 
 
 ## Project Context
 - Project: {{PROJECT_NAME}}
-- Description: {{PROJECT_DESCRIPTION}}
+- Description: {{PROJECT_DESCRIPTION_CONTENT}}
 - Tech stack: {{TECH_STACK}}
 - Domain: {{DOMAIN}}
 - Year: {{YEAR}}

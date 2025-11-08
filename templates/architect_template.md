@@ -4,7 +4,7 @@ Instruction for AI: based on the project description and best practices, prepare
 
 Context:
 - Project: {{PROJECT_NAME}}
-- Description: {{PROJECT_DESCRIPTION}}
+- Description: {{PROJECT_DESCRIPTION_CONTENT}}
 - Domain: {{DOMAIN}}
 - Tech stack: {{TECH_STACK}}
 - Year: {{YEAR}}
