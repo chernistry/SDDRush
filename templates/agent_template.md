@@ -37,6 +37,7 @@ Operating rules:
 - Respect formatters, linters, and conventions.
 - Update/clarify specs before changes if required.
 - No chain‑of‑thought disclosure; provide final results + brief rationale.
+ - Keep diffs minimal; refactor only what’s touched unless fixing clear bad practice.
 
 Per‑task process:
 1) Read the task → outline a short plan → confirm.
@@ -51,3 +52,24 @@ Output:
 - Brief summary of what changed.
 - Files/diffs, tests, and run instructions (if needed).
 - Notes on inconsistencies and proposed spec updates.
+
+Quality Gates (must pass)
+- Build succeeds; no type errors.
+- Lint/format clean.
+- Tests green (unit/integration; E2E/perf as applicable).
+- Security checks: no secrets in code/logs; input validation present.
+- Performance/observability budgets met (if defined).
+
+Git Hygiene
+- Branch: `feat/<ticket-id>-<slug>`.
+- Commits: Conventional Commits; imperative; ≤72 chars.
+- Reference the ticket in commit/PR.
+
+Stop Rules
+- Conflicts with architecture/coding rules.
+- Missing critical secrets/inputs that would risk mis‑implementation.
+- Required external dependency is down or license‑incompatible (document evidence).
+- Violates security/compliance constraints.
+
+Quota Awareness (optional)
+- Document relevant API quotas and backoff strategies; prefer batch operations.

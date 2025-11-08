@@ -33,6 +33,8 @@ Output format (Markdown):
 - A) [Name]: when; pros/cons; constraints
 - B) [Name]: when; pros/cons; constraints
 - C) [Optional]
+## Discovery (optional)
+- If a repo exists: brief structure, key modules, extension points, risks.
 
 ## MCDM (optional but recommended)
 - Criteria (PerfGain, SecRisk, DevTime, Maintainability, Cost, Scalability, DX) with weights (SMART/BWM)
@@ -58,6 +60,7 @@ Output format (Markdown):
 ## Verification
 - Unit/Integration/E2E/Perf/Security: what/how to check
 - Local checks with sample inputs/outputs
+ - Token/latency/cost budgets (if LLM involved)
 
 ## Risks / Unknowns / Assumptions
 - Risk: [what] → mitigation

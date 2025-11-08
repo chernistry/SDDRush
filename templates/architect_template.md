@@ -27,11 +27,23 @@ Output Structure (Markdown):
 - Data schema (high‑level)
 - External integrations
 
+## Discovery (optional, if a repo is available)
+- Map structure, entry points, integration boundaries, and cross‑cutting concerns.
+- Identify dead code, high‑complexity modules, and extension points (minimal change surface).
+- Output a short tree of key files and where your plan plugs in.
+
 ## MCDM for Major Choices
 - Criteria: PerfGain, SecRisk, DevTime, Maintainability, Cost, Scalability, DX
 - Weights: justify briefly (SMART/BWM)
 - Alternatives table: scores 1–9 → normalize → TOPSIS rank
 - Recommendation: pick highest closeness; note trade‑offs and rollback plan
+
+### Decision Matrix (template)
+| Alternative | PerfGain | SecRisk | DevTime | Maintainability | Cost | Scalability | DX | Notes |
+|-------------|----------|---------|---------|-----------------|------|------------|----|-------|
+| A           |          |         |         |                 |      |            |    |       |
+| B           |          |         |         |                 |      |            |    |       |
+| C           |          |         |         |                 |      |            |    |       |
 
 ## Key Decisions (ADR‑style)
 - [ADR‑001] Choice with rationale (alternatives, trade‑offs)
@@ -54,6 +66,27 @@ Output Structure (Markdown):
 - Observability (metrics/logs/traces, alerts)
 - Security (authn/authz, secrets, data protection)
 - CI/CD (pipeline, gates, rollbacks)
+
+## Domain Doctrine & Grounding (optional)
+- Grounding sources (DBs/APIs/files) and how to cite/verify.
+- Policies & prohibitions (e.g., no heuristics for routing, scraping doctrine, robots/ToS).
+- Receipts/verification discipline and provenance requirements.
+
+## Affected Modules/Files (if repo is available)
+- Files to modify → short rationale.
+- Files to create → paths, responsibilities, and initial signatures.
+
+## Implementation Steps
+- Numbered, observable plan with concrete function names and signatures.
+- Include timeouts, retries, validation, and error shapes.
+
+## Interfaces & Contracts
+- API endpoints/functions: input/output schemas, error shapes, versioning.
+- Compatibility strategy and migration notes.
+
+## Stop Rules & Preconditions
+- Go/No‑Go prerequisites (secrets, corpora, env flags, licenses).
+- Conditions to halt and escalate (security/compliance conflicts, blocked dependencies).
 
 ## SLOs & Guardrails
 - SLOs: latency/throughput/error rate

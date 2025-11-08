@@ -35,6 +35,8 @@ Output Format (Markdown)
    - A) [Name]: when to use; pros/cons; constraints
    - B) [Name]: when to use; pros/cons; constraints
    - C) [Optional]
+4) Discovery (optional)
+   - If a repo exists: brief structure, key modules, extension points, risks.
 4) MCDM (for non‑trivial choices)
    - Criteria (PerfGain, SecRisk, DevTime, Maintainability, Cost, Scalability, DX) with weights (SMART/BWM)
    - Score table 1–9; normalize; TOPSIS rank; brief rationale
@@ -59,6 +61,9 @@ Output Format (Markdown)
    - How to run/verify; next steps; owner
 12) References (optional)
    - 1–4 authoritative links if they add value
+
+Hidden Self‑Critique (do not include in final output)
+- PE2 loop ≤3 iterations: diagnose up to 3 weaknesses; propose minimal edits; stop when saturated.
 
 Requirements
 - Be specific to {{YEAR}} and {{TECH_STACK}} (if provided).
