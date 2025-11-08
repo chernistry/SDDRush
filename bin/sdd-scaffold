@@ -49,32 +49,32 @@ JSON
 cat > "$TASK_DIR/README.md" <<MD
 # $TASK_NAME (SDD Task)
 
-Папка с заготовками для Spec-Driven Development.
+Starter folder for Spec‑Driven Development.
 
-- Описание проекта: 
-  - Редактируй: input/project.md
-- Промпты для AI:
-  - Сгенерируй: ../../bin/sdd-prompts "$TASK_DIR"
-- Результаты ресерча:
+- Project description:
+  - Edit: input/project.md
+- Prompts for AI:
+  - Generate: ../../bin/sdd-prompts "$TASK_DIR"
+- Research results:
   - research/best_practices.md
-- Спеки:
+- Specs:
   - spec/architect.md
   - spec/coding_rules.md
-- Агент:
-  - agent/agent.md (после генерации/сборки)
+- Agent:
+  - agent/agent.md (after generation/assembly)
 
-Порядок работы см. в корневом intro.md.
+See the root intro.md for the workflow.
 MD
 
 cat > "$TASK_DIR/input/project.md" <<MD
-# Описание проекта
+# Project Description
 
-Кратко опиши задачу/проект: цели, ограничения, аудитория. Можно начать с 3-5 предложений.
+Briefly describe the task/project: goals, constraints, audience. 3–5 sentences is enough to start.
 
-- Основная цель: ...
-- Пользователи/персоны: ...
-- Ключевые ограничения: ...
-- Результат/критерии готовности: ...
+- Primary goal: ...
+- Users/personas: ...
+- Key constraints: ...
+- Outcome / Definition of Done: ...
 MD
 
 echo "✅ Scaffold created at $TASK_DIR"

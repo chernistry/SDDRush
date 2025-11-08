@@ -60,6 +60,6 @@ Output Format (Markdown)
 12) References (optional)
    - 1–4 authoritative links if they add value
 
-Требования к ответу
-- Конкретика на {{YEAR}} и под {{TECH_STACK}} (если задан).
-- Минимум воды, максимум применимости; всё должно быть легко проверить.
+Requirements
+- Be specific to {{YEAR}} and {{TECH_STACK}} (if provided).
+- Minimal fluff, maximum applicability; everything should be easy to verify.
