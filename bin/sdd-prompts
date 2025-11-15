@@ -51,9 +51,6 @@ def main():
     year = cfg.get("year", str(datetime.now().year))
 
     project_md = read_text(sdd_dir / "project.md")
-    best_practices_md = read_text(sdd_dir / "best_practices.md") or "TODO: paste research results here"
-    architect_md = read_text(sdd_dir / "architect.md") or "TODO: paste the generated architecture specification here"
-    coding_rules_md = read_text(sdd_dir / "coding_rules.md") or "TODO: paste the generated coding rules here"
     prompts_dir = sdd_dir / "prompts"
 
     base_values = {
@@ -63,16 +60,11 @@ def main():
         "TECH_STACK": tech_stack,
         "DOMAIN": domain,
         "YEAR": str(year),
-        "BEST_PRACTICES_CONTENT": best_practices_md,
-        "ARCHITECT_CONTENT": architect_md,
-        "CODING_RULES_CONTENT": coding_rules_md,
     }
 
     prompts_dir.mkdir(parents=True, exist_ok=True)
 
     mapping = [
-        ("task_solver_template.md", "00_task_solver.prompt.md"),
-        ("solution_ideation_template.md", "00_solution_ideation.prompt.md"),
         ("research_template.md", "01_research.prompt.md"),
         ("architect_template.md", "02_architect.prompt.md"),
         ("coding_rules_template.md", "03_coding_rules.prompt.md"),

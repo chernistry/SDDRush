@@ -1,4 +1,4 @@
-# Architect Prompt Template (Improved)
+# Architect Prompt Template
 
 Instruction for AI: based on the project description and best practices, prepare an implementation‑ready architecture specification.
 
@@ -8,11 +8,15 @@ Context:
 - Domain: {{DOMAIN}}
 - Tech stack: {{TECH_STACK}}
 - Year: {{YEAR}}
-- Best practices (inlined below):
+- Best practices: see `.sdd/best_practices.md`
 
-```md
-{{BEST_PRACTICES_CONTENT}}
-```
+Operating Principles:
+- Clarity first: plan → solution with brief, checkable reasoning
+- MVP focus: pick minimal-sufficient solution; note scale-up path
+- Verification: include tests/samples/validators
+- Security: least privilege, use stack's secrets store
+- Reliability: idempotency, retries with backoff+jitter, timeouts
+- Cost/latency: budgets and caps; avoid over-engineering
 
 Task:
 Produce architect.md as the source of truth for implementation.
@@ -21,6 +25,14 @@ Output Structure (Markdown):
 ## Goals & Non‑Goals
 - Goals: [1–5]
 - Non‑Goals: [1–5]
+
+## Alternatives (2–3)
+- A) [Name]: when to use; pros/cons; constraints
+- B) [Name]: when to use; pros/cons; constraints
+- C) [Optional]
+
+## MVP Recommendation
+- MVP choice and why; scale‑up path; rollback plan
 
 ## Architecture Overview
 - Diagram (text): components and connections

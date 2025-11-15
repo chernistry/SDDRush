@@ -4,7 +4,7 @@ Minimal, pragmatic toolkit to kick off Spec‑Driven Development (SDD) with prom
 
 ## Why
 - Faster setup for any task with a consistent SDD flow
-- High‑quality prompts (task solver, research, architect, coding rules, agent)
+- High‑quality prompts (research, architect, coding rules, agent)
 - Works with your favorite CLI agents (Q, Qwen, Codex, Gemini, Cursor)
 
 ## Flow
@@ -27,23 +27,21 @@ flowchart LR
 - Render prompts
   - `python bin/sdd-prompts /path/to/project`
 - Run in your agent
-  - `00_task_solver` or `00_solution_ideation` → (optional) save plan
   - `01_research` → paste to `.sdd/best_practices.md`
   - Re‑render → `02_architect` → paste to `.sdd/architect.md` (includes Backlog tickets)
   - `03_coding_rules` → paste to `.sdd/coding_rules.md`
   - Re‑render → `04_agent` → implement tickets in `backlog/open/`
 
 ## Templates
-- `templates/task_solver_template.md` — solution designer with MCDM step
-- `templates/solution_ideation_template.md` — alternatives→recommendation, verification
 - `templates/research_template.md` — evidence‑based best practices ({{YEAR}})
-- `templates/architect_template.md` — ADRs, SLOs, and MCDM table for major choices
+- `templates/architect_template.md` — Alternatives, MVP choice, ADRs, SLOs, MCDM for major choices
 - `templates/coding_rules_template.md` — concrete commands/configs
-- `templates/agent_template.md` — implementing agent with inline context
+- `templates/agent_template.md` — implementing agent with file references
 - `templates/adapt_prompt.md` — 1:1 prompt rewrites between stacks/domains
 
 ## Notes
-- You can re‑run `bin/sdd-prompts` anytime — it inlines latest context into the agent prompt.
+- You can re‑run `bin/sdd-prompts` anytime — it updates prompts with latest context.
+- Agent prompt uses file references instead of inlining content — saves tokens, agent reads what it needs.
 - Web search stays manual by design; paste results into files.
 
 ## Example Project

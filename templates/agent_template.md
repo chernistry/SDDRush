@@ -8,30 +8,12 @@ Project Context:
 - Domain: {{DOMAIN}}
 - Year: {{YEAR}}
 
-Inline attachments to read:
-
-## Project Description
-```md
-{{PROJECT_DESCRIPTION_CONTENT}}
-```
-
-## Best Practices
-```md
-{{BEST_PRACTICES_CONTENT}}
-```
-
-## Architecture Spec
-```md
-{{ARCHITECT_CONTENT}}
-```
-
-## Coding Rules
-```md
-{{CODING_RULES_CONTENT}}
-```
-
-## Backlog
-- Read tickets under `backlog/open/` sorted by prefix `nn-` and dependency order.
+Required reading (use fs_read to access):
+- `.sdd/project.md` — project description
+- `.sdd/best_practices.md` — research and best practices
+- `.sdd/architect.md` — architecture specification
+- `.sdd/coding_rules.md` — coding rules and conventions
+- `backlog/open/` — tickets sorted by prefix `nn-` and dependency order
 
 Operating rules:
 - Always consult architecture and coding rules first.
