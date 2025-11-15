@@ -44,8 +44,6 @@ flowchart LR
 - Agent prompt uses file references instead of inlining content — saves tokens, agent reads what it needs.
 - Web search stays manual by design; paste results into files.
 
-## Example Project
-A great example of SDD in action is the [cr717](https://github.com/chernistry/tr808ish) project - a drum sequencer created with AI in about 30 minutes using the SDD methodology. This project demonstrates how SDD enables rapid development of functional applications with quality code, comprehensive testing, and proper architecture.
 
 ## License
 MIT
