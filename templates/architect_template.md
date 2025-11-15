@@ -54,6 +54,17 @@ Output Structure (Markdown):
 - Identify dead code, high‑complexity modules, and extension points (minimal change surface).
 - Output a short tree of key files and where your plan plugs in.
 
+**Example Project Structure (if helpful):**
+```
+project/
+├── src/
+│   ├── core/
+│   ├── api/
+│   └── utils/
+├── tests/
+└── docs/
+```
+
 ## MCDM for Major Choices
 - Criteria: PerfGain, SecRisk, DevTime, Maintainability, Cost, Scalability, DX
 - Weights: justify briefly (SMART/BWM)
@@ -130,6 +141,20 @@ Output Structure (Markdown):
 ## SLOs & Guardrails
 - SLOs: latency/throughput/error rate
 - Performance/Cost budgets and limits
+
+## Implementation Checklist (adapt to project)
+- [ ] All external calls have timeouts and retry policies
+- [ ] Error handling covers expected failure modes
+- [ ] Tests cover critical paths and edge cases
+- [ ] Security requirements addressed (secrets, validation, auth)
+- [ ] Observability in place (logs, metrics, traces)
+- [ ] Documentation updated (API contracts, deployment notes)
+
+## Hidden Quality Loop (internal, do not include in output)
+PE2 self-check (≤3 iterations):
+1. Diagnose: identify up to 3 weaknesses (missing tests/contracts, risky assumptions, perf/security gaps)
+2. Refine: minimal edits to fix (≤60 words per iteration)
+3. Stop when saturated or no significant improvements remain
 
 Requirements
 1) No chain‑of‑thought. Provide final decisions with brief, verifiable reasoning.

@@ -43,6 +43,12 @@ Output Structure (concise and concrete):
 - Correlation IDs across requests
 - Performance budgets and monitoring
 
+### Metric Naming Conventions (if applicable)
+- Use descriptive names with units: `tool_latency_ms`, `requests_total`
+- Labels for dimensions: `{tool=, status=, code=}`
+- Avoid high-cardinality labels (no user IDs, timestamps in labels)
+- Examples: `http_request_duration_seconds{method=,status=}`, `db_query_errors_total{table=,error_type=}`
+
 ## Performance & Cost
 - Budgets; limits; profiling
 
@@ -82,6 +88,23 @@ Provide concrete commands for common tasks:
 - Circular dependencies
 - Files >400 LOC without clear separation
 
+## Configuration-Driven Policy
+- All thresholds, limits, and environment-specific values must be configurable
+- Use environment variables or config files (never hardcode)
+- Document all configuration options with defaults and valid ranges
+- Validate configuration on startup
+- Examples: timeouts, rate limits, feature flags, API endpoints, batch sizes
+
+## File Creation Policy
+- Prefer in-memory operations and existing modules
+- Create new files only for substantial, reusable functionality
+- Organize by purpose:
+  - Ephemeral/debug scripts → `debug/` or `scripts/`
+  - Tests → `tests/` or `__tests__/`
+  - Shared utilities → `utils/` or `lib/`
+- Avoid file sprawl: consolidate related functionality
+- Split files only when they exceed ~400 LOC or have distinct responsibilities
+
 Requirements
 1) Provide concrete commands/flags/configs.
 2) For {{TECH_STACK}} recommend specific libs with rationale.
@@ -107,6 +130,18 @@ Optional Deep Sections (use when relevant)
 
 ## Acceptance Criteria
 - A short checklist mapping rules to verifiable checks (build, lint, tests, perf, security, docs).
+
+## Acceptance Checklist (adapt to project)
+- [ ] Code builds without errors
+- [ ] Linter passes with no warnings
+- [ ] All tests pass (unit, integration, e2e as applicable)
+- [ ] Test coverage meets target (if defined)
+- [ ] Security checks pass (no secrets in code, input validation present)
+- [ ] Performance budgets met (if defined)
+- [ ] Documentation updated (API docs, README, comments)
+- [ ] Configuration externalized (no hardcoded values)
+- [ ] Error handling covers expected failures
+- [ ] Observability in place (logs, metrics where applicable)
 
 ## File Hygiene
 - Create new files only for reusable functionality; remove dead code; split >400 LOC; avoid shared mutable state.
