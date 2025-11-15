@@ -22,6 +22,16 @@ Task:
 Produce architect.md as the source of truth for implementation.
 
 Output Structure (Markdown):
+## Hard Constraints (if applicable)
+- Domain-specific prohibitions (e.g., no heuristics, no regex parsers, tool-first grounding)
+- Compliance requirements (GDPR, accessibility, security standards)
+- Technology restrictions (no external dependencies, offline-first, etc.)
+
+## Go/No-Go Preconditions
+- Blocking prerequisites before implementation starts
+- Required secrets, API keys, credentials, licenses
+- Environment setup, corpora, test data availability
+- Dependency readiness (external services, databases)
 ## Goals & Non‑Goals
 - Goals: [1–5]
 - Non‑Goals: [1–5]
@@ -78,6 +88,18 @@ Output Structure (Markdown):
 - Observability (metrics/logs/traces, alerts)
 - Security (authn/authz, secrets, data protection)
 - CI/CD (pipeline, gates, rollbacks)
+
+## Deployment & Platform Readiness
+- Target platform specifics (Lambda cold-start, container size, etc.)
+- Resource constraints (memory, CPU, timeout limits)
+- Bundling strategy, lazy imports, optimization
+- Platform-specific packaging notes
+
+## Verification Strategy
+- When and how to verify outputs (before/after persistence)
+- Verification artifacts and storage
+- Auto-verification triggers and conditions
+- Provenance and citation requirements
 
 ## Domain Doctrine & Grounding (optional)
 - Grounding sources (DBs/APIs/files) and how to cite/verify.
