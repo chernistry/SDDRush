@@ -17,6 +17,8 @@ Create a comprehensive best‑practices guide for {{PROJECT_NAME}} that is:
 2) Specific — tailored to {{TECH_STACK}} and {{DOMAIN}}.
 3) Practical — include concrete commands/config/code.
 4) Complete — cover architecture, quality, ops, and security.
+5) Risk‑aware — define a simple metric profile (PerfGain, SecRisk, DevTime, Maintainability, Cost, DX) with indicative weights for this project, plus 3–5 key risks with High/Medium/Low labels.
+6) Verification‑ready — for each major recommendation, note how to validate it (tests, metrics, experiments) so the architect/agent can reuse these checks.
 
 ## Output Structure (Markdown)
 ### 1. TL;DR (≤10 bullets)
@@ -89,6 +91,7 @@ Repeat the structure from 4.
 1) No chain‑of‑thought. Provide final answers with short, verifiable reasoning.
 2) If browsing is needed, state what to check and why; produce a provisional answer with TODOs.
 3) Keep it implementable today; prefer defaults that reduce complexity.
+4) Do not fabricate libraries, APIs, or data; if unsure or the evidence is weak, mark the item as TODO/Low confidence and suggest concrete sources to verify.
 
 ## Additional Context
 {{ADDITIONAL_CONTEXT}}

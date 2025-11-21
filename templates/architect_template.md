@@ -36,6 +36,11 @@ Output Structure (Markdown):
 - Goals: [1–5]
 - Non‑Goals: [1–5]
 
+## Metric Profile & Strategic Risk Map
+- Define a simple metric profile for this project (PerfGain, SecRisk, DevTime, Maintainability, Cost, Scalability, DX) with indicative relative weights (e.g., SecRisk 0.4, PerfGain 0.2, Cost 0.1, …).
+- Summarize 3–7 strategic risks (e.g., security, test coverage, vendor lock‑in, data loss, latency/cost overruns) with High/Medium/Low ratings.
+- Note how this profile should influence architecture choices (e.g., prioritize safety and maintainability in high‑risk areas even at the expense of local performance).
+
 ## Alternatives (2–3)
 - A) [Name]: when to use; pros/cons; constraints
 - B) [Name]: when to use; pros/cons; constraints
@@ -86,6 +91,101 @@ project/
 - Component A: responsibility, interfaces, dependencies
 - Component B: ...
 
+## Code Standards & Conventions
+### Language & Style
+- Language and framework versions (LTS where possible).
+- Linters/formatters (tools, config files, CI integration).
+- Naming conventions (files, modules, classes, functions, tests).
+- Typing rules (strictness level, `mypy`/TS config, nullability).
+
+### Framework & Project Layout
+- Folder/module conventions; separation of concerns.
+- Environment configs for dev/stage/prod and local overrides.
+- Where to put domain logic, adapters, scripts, and infra code.
+
+### API & Contracts
+- REST/GraphQL/gRPC style; pagination, filtering, error shapes.
+- Versioning strategy (URLs/headers/schemas) and deprecation policy.
+- Input/output validation (schemas, DTOs, serializers).
+
+### Testing
+- Coverage targets; required libraries and fixtures.
+- Unit/Integration/E2E/Perf/Security testing strategy.
+- When to stub/mocking vs. use real dependencies.
+
+### Security
+- AuthN/AuthZ patterns; scopes/roles.
+- Secrets management (env vars/secret stores, never in code/logs).
+- Dependency hygiene (SCA, pinning, update cadence).
+- PII handling; data minimization and retention.
+- SSRF/input validation/signature verification; allowlists for external domains/APIs.
+
+### Resilience
+- Explicit timeouts on all external calls (network, DB, APIs).
+- Retry policies with exponential backoff + jitter, max attempts.
+- Circuit breakers for fragile integrations; graceful degradation.
+- Rate limiting (per-user/per-endpoint) and quotas.
+- Idempotency keys for side-effects and background jobs.
+
+### Observability
+- Metrics/logs/traces; alerts and dashboards.
+- Structured logging (JSON, no secrets) with correlation IDs.
+- Health endpoints (e.g. `/healthz`, `/metrics`).
+- Performance budgets and monitoring; key SLIs/SLOs.
+
+### Performance & Cost
+- Perf targets and cost budgets for critical paths.
+- Profiling strategy and tools; when to optimize.
+
+### Git & PR Process
+- Branching model; commit style.
+- Review checklists and required approvals.
+
+### Tooling
+- Formatters, linters, type checkers, security scanners.
+- Pre-commit hooks and CI steps.
+
+### Commands
+Provide concrete commands for common tasks (adapt to {{TECH_STACK}}):
+```bash
+# Format code
+<format-command>
+
+# Lint
+<lint-command>
+
+# Run tests
+<test-command>
+
+# Build
+<build-command>
+
+# Type check
+<typecheck-command>
+```
+
+### Anti-Patterns (Do NOT do this)
+- No timeouts/retries on external calls.
+- Hardcoded secrets, URLs, or configuration.
+- Silent error swallowing (empty catch blocks).
+- Print statements instead of structured logging.
+- Missing tests for critical paths.
+- No idempotency for side-effects.
+- Mutable global state and circular dependencies.
+- Files >400 LOC without clear separation of concerns.
+
+### Configuration-Driven Policy
+- All thresholds, limits, and environment-specific values must be configurable.
+- Use environment variables or config files (never hardcode).
+- Document configuration options with defaults and valid ranges.
+- Validate configuration on startup.
+
+### File Creation Policy
+- Prefer in-memory operations and existing modules.
+- Create new files only for substantial, reusable functionality.
+- Organize by purpose (scripts/tests/utils).
+- Avoid file sprawl; split large files with distinct responsibilities.
+
 ## API Contracts
 - Endpoint/Function → contract (input/output, errors)
 - Versioning and compatibility
@@ -127,7 +227,7 @@ project/
 
 ## Backlog (Tickets)
 - Break the work into tickets with clear dependencies and DoD.
-- File structure: `backlog/open/<nn>-<kebab>.md`
+- File structure: `.sdd/backlog/tickets/open/<nn>-<kebab>.md`
 - Ticket format (each file): Title, Objective, DoD, Steps (concrete), Affected files, Tests, Risks, Dependencies.
 
 ## Interfaces & Contracts
@@ -151,10 +251,10 @@ project/
 - [ ] Documentation updated (API contracts, deployment notes)
 
 ## Hidden Quality Loop (internal, do not include in output)
-PE2 self-check (≤3 iterations):
-1. Diagnose: identify up to 3 weaknesses (missing tests/contracts, risky assumptions, perf/security gaps)
-2. Refine: minimal edits to fix (≤60 words per iteration)
-3. Stop when saturated or no significant improvements remain
+PE2/Chain‑of‑Verification self-check (≤3 iterations):
+1. Diagnose: compare the spec against Hard Constraints, Metric Profile & Strategic Risk Map, SLOs, and best_practices; identify up to 3 concrete weaknesses (missing tests/contracts, risky assumptions, perf/security gaps).
+2. Refine: make minimal, surgical edits (≤60 words per iteration) to address these weaknesses without changing the overall structure.
+3. Stop when saturated or when further changes would add complexity without clear benefit.
 
 Requirements
 1) No chain‑of‑thought. Provide final decisions with brief, verifiable reasoning.

@@ -2,29 +2,25 @@
 set -euo pipefail
 
 # Initialize Single-Project SDD layout inside an existing directory.
-# Usage: bin/sdd-init [<project-dir>] [--stack "Python/FastAPI"] [--domain "web"] [--year 2025]
+# Usage: bin/sdd-init [<project-dir>] [--path|-p <dir>] [--stack "Python/FastAPI"] [--domain "web"] [--year 2025]
 
 TARGET_DIR="$(pwd)"
 STACK=""
 DOMAIN=""
 YEAR="$(date +%Y)"
 
-maybe_dir="$1" || true
-if [[ "${maybe_dir:-}" != "" && "${maybe_dir:-}" != --* ]]; then
-  TARGET_DIR="$maybe_dir"
-  shift || true
-fi
-
 while [[ $# -gt 0 ]]; do
   case "$1" in
+    --path|-p) TARGET_DIR="$2"; shift 2;;
     --stack) STACK="$2"; shift 2;;
     --domain) DOMAIN="$2"; shift 2;;
     --year) YEAR="$2"; shift 2;;
-    *) echo "Unknown option: $1" >&2; exit 1;;
+    --*) echo "Unknown option: $1" >&2; exit 1;;
+    *) TARGET_DIR="$1"; shift;;
   esac
 done
 
-mkdir -p "$TARGET_DIR/.sdd/prompts" "$TARGET_DIR/backlog/open" "$TARGET_DIR/backlog/closed"
+mkdir -p "$TARGET_DIR/.sdd/prompts" "$TARGET_DIR/.sdd/backlog/tickets/open" "$TARGET_DIR/.sdd/backlog/tickets/closed"
 
 PROJECT_NAME="$(basename "$TARGET_DIR")"
 
@@ -50,4 +46,31 @@ Briefly describe the task/project: goals, constraints, audience. 3–5 sentences
 MD
 fi
 
-echo "✅ SDD initialized in $TARGET_DIR (.sdd + backlog/)"
+echo "✅ SDD initialized in $TARGET_DIR (.sdd/prompts + .sdd/backlog/tickets/)"
+echo ""
+echo "📋 Next steps:"
+echo "1. Edit .sdd/project.md (describe your project)"
+echo "2. Run: python bin/sdd-prompts \"$TARGET_DIR\""
+echo "3. Follow the 3-step flow:"
+echo "   → Step 1: Research (01_research.prompt.md → best_practices.md)"
+echo "   → Step 2: Architect (02_architect.prompt.md → architect.md + tickets)"
+echo "   → Step 3: Agent (03_agent.prompt.md → implement tickets)"
+
+# After initialization, check what's been completed
+if [[ -f "$TARGET_DIR/.sdd/best_practices.md" ]]; then
+  echo "   ✅ Research completed"
+else
+  echo "   ⏳ Research pending"
+fi
+
+if [[ -f "$TARGET_DIR/.sdd/architect.md" ]]; then
+  echo "   ✅ Architecture completed"
+else
+  echo "   ⏳ Architecture pending"
+fi
+
+OPEN_TICKETS=$(find "$TARGET_DIR/.sdd/backlog/tickets/open" -name "*.md" 2>/dev/null | wc -l | tr -d ' ')
+CLOSED_TICKETS=$(find "$TARGET_DIR/.sdd/backlog/tickets/closed" -name "*.md" 2>/dev/null | wc -l | tr -d ' ')
+if [[ $OPEN_TICKETS -gt 0 || $CLOSED_TICKETS -gt 0 ]]; then
+  echo "   📝 Tickets: $CLOSED_TICKETS closed, $OPEN_TICKETS open"
+fi

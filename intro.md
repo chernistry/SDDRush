@@ -1,68 +1,161 @@
-# SDD (Spec‑Driven Development) — minimal algorithm and starter
+# SDD (Spec‑Driven Development) — Optimized 3-Step Flow
 
-Goal: minimize manual steps without over‑engineering. This repo provides only what’s needed plus light automation to generate prompts.
+**Goal**: Minimize manual steps and cognitive overhead. Research → Plan → Execute.
 
-Core chain:
-Task → Description → Research → Architecture → Rules → Agent → Tickets → Code
+**Core chain**: Task → Research → Architecture (+ Coding Rules + Tickets) → Implementation
 
-Automate: prompt generation and file structure. Manual: web research (browser), running prompts in your preferred CLI agent (Q, Qwen, Codex, Gemini, Cursor), pasting outputs into files.
+**Automate**: Prompt generation, file structure, progress tracking.  
+**Manual**: Web research, running prompts in AI (ChatGPT/Claude/Q), pasting outputs.
 
-—
+---
 
-What’s here
-- `templates/`: simple prompt templates (task solver, ideation, research, architect, coding rules, agent, adapt).
-- `bin/sdd-init`: initialize Single‑Project SDD in an existing project dir.
-- `bin/sdd-prompts`: render ready‑to‑paste prompts with context substitution.
+## Document Hierarchy
 
-Minimal single‑project structure
+```
+project.md (project description)
+    ↓
+best_practices.md (industry knowledge, tech landscape)
+    ↓
+architect.md (architecture + coding rules + tickets)
+    ↓
+tickets (concrete implementation tasks)
+```
+
+### Reference Logic
+
+**architect.md** references:
+- `project.md` (project goals and constraints)
+- `best_practices.md` (applies industry best practices to architecture)
+
+**tickets** reference:
+- `architect.md` (architecture, components, coding rules)
+- NOT `best_practices.md` directly (already digested in architect.md)
+
+**agent** reads:
+- All files (project.md, best_practices.md, architect.md)
+- Current ticket
+
+### Separation of Concerns
+
+- **best_practices.md** = reusable industry knowledge (can be reused across projects with same stack)
+- **architect.md** = project-specific decisions (already incorporates best practices)
+- **tickets** = implementation tasks following architect.md
+
+This simplifies implementation: developers/agents read architect.md + ticket, without digging into best_practices.
+
+---
+
+## Single-Project Structure
+
 ```
 .sdd/
 ├── config.json                # name, stack, domain, year
-├── project.md                 # short description (manual)
-├── best_practices.md          # research result (manual paste)
-├── architect.md               # final architecture (includes Backlog)
-├── coding_rules.md            # final rules
-└── prompts/                   # prompts for each step
+├── project.md                 # project description (manual)
+├── best_practices.md          # research output (paste from AI)
+├── architect.md               # architecture + coding rules + ADRs (paste from AI)
+└── prompts/                   # generated prompts for each step
+    ├── 01_research.prompt.md
+    ├── 02_architect.prompt.md
+    └── 03_agent.prompt.md
 
 backlog/
-├── open/                      # ticket files (created by Architect)
-└── closed/
+├── open/                      # tickets created by architect
+│   ├── 01-setup.md
+│   ├── 02-api.md
+│   └── ...
+└── closed/                    # completed tickets
 ```
 
-—
+---
 
-SDD algorithm (short)
-0) Input task
-- Manually write `tasks/<task>/input/project.md`.
+## Optimized SDD Flow (3 Steps)
 
-1) Decide the solution (Task Solver / Ideation)
-- Render prompts: `python bin/sdd-prompts /path/to/project`.
-- Use `00_task_solver` or `00_solution_ideation` (optional plan only).
+### Step 0: Initialization
 
-2) Research → Best Practices / Stack
-- Open `01_research`, run in your AI, use the browser for sources.
-- Paste the result to `.sdd/best_practices.md`.
+```bash
+# Initialize SDD in your project
+sdd-init -p /path/to/project --stack "Python/FastAPI" --domain "search"
 
-3) Architect (also generates Backlog tickets)
-- Re‑render: `python bin/sdd-prompts /path/to/project` (so architect/agent absorb best_practices).
-- Open `02_architect`, run in AI.
-- Paste to `.sdd/architect.md`. Create ticket files under `backlog/open/`.
+# Describe your project in .sdd/project.md:
+# - What the project does
+# - Problems it solves
+# - Goals, users, constraints, Definition of Done
+```
 
-4) Coding rules
-- Open `03_coding_rules`, run in AI.
-- Paste to `.sdd/coding_rules.md`.
+### Step 1: Research (Industry Landscape)
 
-5) Agent
-- Re‑render: `python bin/sdd-prompts /path/to/project` — it inlines description, best practices, architecture, rules.
-- Open `04_agent`, run in AI → implement tickets in `backlog/open/`.
+```bash
+# Generate prompts
+python bin/sdd-prompts /path/to/project
 
-6) Tickets (optional)
-- From `spec/solution_plan.md` and `spec/architect.md`, build the backlog (manually or via AI) and execute.
+# Copy 01_research.prompt.md to ChatGPT/Claude
+# AI researches:
+# - What's new in 2025 for your stack
+# - Best practices for your domain
+# - Architecture patterns
+# - Tools, libraries, approaches
 
-—
+# Save result to .sdd/best_practices.md
+```
 
-Notes
-- You can re‑run `python bin/sdd-prompts` anytime — it inlines the latest best_practices/architect/coding_rules into the agent prompt.
-- Use `templates/adapt_prompt.md` to quickly rewrite a template to a new stack/domain 1:1.
+### Step 2: Architect (Planning)
 
-Done. Extend automation only when it pays off — keep the core simple.
+```bash
+# Regenerate prompts (so architect sees best_practices.md)
+python bin/sdd-prompts /path/to/project
+
+# Copy 02_architect.prompt.md to ChatGPT/Claude
+# AI creates:
+# - Architecture (components, API, data model)
+# - Coding rules (style, linters, tests, security)
+# - ADRs (architectural decisions)
+# - Tickets in backlog/open/ (numbered tasks with dependencies)
+
+# Save result to .sdd/architect.md
+# Create ticket files in backlog/open/01-setup.md, 02-api.md, etc.
+```
+
+### Step 3: Agent (Implementation)
+
+```bash
+# Regenerate prompts one last time
+python bin/sdd-prompts /path/to/project
+
+# Copy 03_agent.prompt.md to Q/Claude/Cursor
+# AI:
+# - Reads .sdd/project.md, best_practices.md, architect.md
+# - Takes first ticket from backlog/open/
+# - Implements it
+# - Moves to backlog/closed/
+# - Takes next ticket
+
+# Work iteratively through tickets until completion
+```
+
+---
+
+## What's Included
+
+- **templates/**: Prompt templates (research, architect, agent, adapt)
+- **bin/sdd-init**: Initialize SDD structure in existing project
+- **bin/sdd-prompts**: Render ready-to-paste prompts with context substitution
+
+---
+
+## Notes
+
+- Re-run `python bin/sdd-prompts` anytime to update prompts with latest context
+- Agent prompt uses file references instead of inlining content (saves tokens)
+- Web search stays manual by design; paste results into files
+- Use `templates/adapt_prompt.md` to rewrite templates for different stacks/domains
+
+---
+
+## Why 3 Steps (Not 4)?
+
+Previous flow had separate `coding_rules` step, which duplicated content from architect (testing, security, API contracts). Now coding rules are integrated into architect.md as a dedicated section, reducing redundancy and cognitive load.
+
+**Before**: Research → Architect → Coding Rules → Agent  
+**After**: Research → Architect (includes coding rules) → Agent
+
+Keep the core simple. Extend automation only when it pays off.

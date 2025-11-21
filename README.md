@@ -4,7 +4,7 @@ Minimal, pragmatic toolkit to kick off Spec‑Driven Development (SDD) with prom
 
 ## Why
 - Faster setup for any task with a consistent SDD flow
-- High‑quality prompts (research, architect, coding rules, agent)
+- High‑quality prompts (research, architect, agent) with coding rules integrated into architect.md
 - Works with your favorite CLI agents (Q, Qwen, Codex, Gemini, Cursor)
 
 ## Flow
@@ -12,11 +12,10 @@ Minimal, pragmatic toolkit to kick off Spec‑Driven Development (SDD) with prom
 flowchart LR
   A[Task] --> B[Description]
   B --> C[Research]
-  C --> D[Architecture]
-  D --> E[Coding Rules]
-  E --> F[Agent]
-  F --> G[Tickets]
-  G --> H[Code]
+  C --> D[Architecture (+ Coding Rules)]
+  D --> E[Agent]
+  E --> F[Tickets]
+  F --> G[Code]
 ```
 
 ## Quick Start (recommended: single‑project mode)
@@ -28,14 +27,12 @@ flowchart LR
   - `python bin/sdd-prompts /path/to/project`
 - Run in your agent
   - `01_research` → paste to `.sdd/best_practices.md`
-  - Re‑render → `02_architect` → paste to `.sdd/architect.md` (includes Backlog tickets)
-  - `03_coding_rules` → paste to `.sdd/coding_rules.md`
-  - Re‑render → `04_agent` → implement tickets in `backlog/open/`
+  - Re‑render → `02_architect` → paste to `.sdd/architect.md` (includes coding standards & backlog tickets)
+  - Re‑render → `03_agent` → implement tickets in `backlog/open/`
 
 ## Templates
 - `templates/research_template.md` — evidence‑based best practices ({{YEAR}})
-- `templates/architect_template.md` — Alternatives, MVP choice, ADRs, SLOs, MCDM for major choices
-- `templates/coding_rules_template.md` — concrete commands/configs
+- `templates/architect_template.md` — Architecture, code standards, ADRs, SLOs, MCDM for major choices
 - `templates/agent_template.md` — implementing agent with file references
 - `templates/adapt_prompt.md` — 1:1 prompt rewrites between stacks/domains
 

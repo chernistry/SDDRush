@@ -67,8 +67,7 @@ def main():
     mapping = [
         ("research_template.md", "01_research.prompt.md"),
         ("architect_template.md", "02_architect.prompt.md"),
-        ("coding_rules_template.md", "03_coding_rules.prompt.md"),
-        ("agent_template.md", "04_agent.prompt.md"),
+        ("agent_template.md", "03_agent.prompt.md"),
     ]
 
     for tpl_name, out_name in mapping:

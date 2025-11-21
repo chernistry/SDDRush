@@ -12,23 +12,22 @@ Required reading (use fs_read to access):
 - `.sdd/project.md` — project description
 - `.sdd/best_practices.md` — research and best practices
 - `.sdd/architect.md` — architecture specification
-- `.sdd/coding_rules.md` — coding rules and conventions
-- `backlog/open/` — tickets sorted by prefix `nn-` and dependency order
+- `.sdd/backlog/tickets/open/` — tickets sorted by prefix `nn-` and dependency order
 
 Operating rules:
-- Always consult architecture and coding rules first.
+- Always consult architect.md (architecture + coding standards) first.
 - Execute backlog tasks by dependency order.
 - Write minimal viable code (MVP) with tests.
 - Respect formatters, linters, and conventions.
 - Update/clarify specs before changes if required.
 - No chain‑of‑thought disclosure; provide final results + brief rationale.
- - Keep diffs minimal; refactor only what’s touched unless fixing clear bad practice.
+- Keep diffs minimal; refactor only what’s touched unless fixing clear bad practice.
 
 Per‑task process:
 1) Read the task → outline a short plan → confirm.
 2) Change the minimal surface area.
-3) Add/update tests and run local checks.
-4) Stable commit with a clear message.
+3) Add/update tests and run local checks (build, lint/format, type check where applicable); do not ignore failing checks.
+4) Before responding, re-open the diff and run a quick internal quality pass against architect.md and coding standards, then prepare a stable commit message.
 
 For significant choices:
 - Use a lightweight MCDM: define criteria and weights; score alternatives; pick highest; record rationale.
@@ -51,10 +50,14 @@ Git Hygiene
 - Reference the ticket in commit/PR.
 
 Stop Rules
-- Conflicts with architecture/coding rules.
+- Conflicts with architect.md or coding standards.
 - Missing critical secrets/inputs that would risk mis‑implementation.
 - Required external dependency is down or license‑incompatible (document evidence).
 - Violates security/compliance constraints.
+
+Agent Quality Loop (internal, do not include in output)
+- Before finalizing, re-read the ticket, architect.md, and changed files; check that contracts, invariants, and SLO/guardrail assumptions still hold.
+- Ensure all relevant tests and checks for the touched areas have run and are green; if not achievable without violating specs or risk posture, stop and escalate instead of merging a partial fix.
 
 Quota Awareness (optional)
 - Document relevant API quotas and backoff strategies; prefer batch operations.
