@@ -9,6 +9,7 @@ Context:
 - Tech stack: {{TECH_STACK}}
 - Year: {{YEAR}}
 - Best practices: see `.sdd/best_practices.md`
+- Definition of Done: see `.sdd/project.md` (section “Definition of Done”)
 
 Operating Principles:
 - Clarity first: plan → solution with brief, checkable reasoning
@@ -17,6 +18,7 @@ Operating Principles:
 - Security: least privilege, use stack's secrets store
 - Reliability: idempotency, retries with backoff+jitter, timeouts
 - Cost/latency: budgets and caps; avoid over-engineering
+- DoD alignment: architecture and tickets must satisfy the Definition of Done from `.sdd/project.md`.
 
 Task:
 Produce architect.md as the source of truth for implementation.
@@ -35,6 +37,7 @@ Output Structure (Markdown):
 ## Goals & Non‑Goals
 - Goals: [1–5]
 - Non‑Goals: [1–5]
+- Link goals explicitly to the Definition of Done from `.sdd/project.md` (what must be true at release).
 
 ## Metric Profile & Strategic Risk Map
 - Define a simple metric profile for this project (PerfGain, SecRisk, DevTime, Maintainability, Cost, Scalability, DX) with indicative relative weights (e.g., SecRisk 0.4, PerfGain 0.2, Cost 0.1, …).
@@ -45,6 +48,13 @@ Output Structure (Markdown):
 - A) [Name]: when to use; pros/cons; constraints
 - B) [Name]: when to use; pros/cons; constraints
 - C) [Optional]
+
+## Research Conflicts & Resolutions
+- Summarize key conflicting practices from `.sdd/best_practices.md` (section “Conflicting Practices & Alternatives”), including options and trade‑offs.
+- For each conflict, record:
+  - The chosen option and why (using the Metric Profile and project constraints/Definition of Done).
+  - Links to detailed ADR entries (e.g., [ADR‑00X]).
+  - Implications for components, data model, and quality attributes.
 
 ## MVP Recommendation
 - MVP choice and why; scale‑up path; rollback plan
@@ -88,8 +98,9 @@ project/
 - [ADR‑002] ...
 
 ## Components
-- Component A: responsibility, interfaces, dependencies
+- Component A: responsibility, interfaces, dependencies; typical flows and 3–10 key edge cases.
 - Component B: ...
+- For large projects, group components into domains (e.g., `.sdd/architecture/components/<area>.md`) and keep this section as a high‑level index.
 
 ## Code Standards & Conventions
 ### Language & Style
@@ -221,14 +232,29 @@ Provide concrete commands for common tasks (adapt to {{TECH_STACK}}):
 - Files to modify → short rationale.
 - Files to create → paths, responsibilities, and initial signatures.
 
+## Technical Debt & Refactoring Backlog
+- List known or expected areas of technical debt (by component/file).
+- Define principles for when to create a dedicated “janitor” ticket vs. opportunistic refactoring.
+- Provide 3–10 initial refactoring/cleanup tickets with priorities and rough scope.
+
 ## Implementation Steps
 - Numbered, observable plan with concrete function names and signatures.
 - Include timeouts, retries, validation, and error shapes.
 
 ## Backlog (Tickets)
-- Break the work into tickets with clear dependencies and DoD.
+- Break the work into tickets with clear dependencies and Definition of Done alignment.
 - File structure: `.sdd/backlog/tickets/open/<nn>-<kebab>.md`
-- Ticket format (each file): Title, Objective, DoD, Steps (concrete), Affected files, Tests, Risks, Dependencies.
+- Ticket format (each file, strongly recommended):
+  - Header: `# Ticket: <nn> <short-title>`
+  - Spec version: reference to this document (e.g., `Spec version: vX.Y` or commit/ADR).
+  - Context: links to relevant sections in this spec (components, ADR, API contracts, quality standards).
+  - Objective & DoD: what must be true when this ticket is “Done”.
+  - Steps: 3–10 concrete, observable steps.
+  - Affected files/modules: explicit list or patterns.
+  - Tests: specific test cases and commands to run.
+  - Risks & Edge Cases: known risks and important edge cases to cover.
+  - Dependencies: upstream/downstream tickets.
+- For recurring refactor/cleanup work, create dedicated “janitor” tickets and keep them small and focused.
 
 ## Interfaces & Contracts
 - API endpoints/functions: input/output schemas, error shapes, versioning.
@@ -237,6 +263,13 @@ Provide concrete commands for common tasks (adapt to {{TECH_STACK}}):
 ## Stop Rules & Preconditions
 - Go/No‑Go prerequisites (secrets, corpora, env flags, licenses).
 - Conditions to halt and escalate (security/compliance conflicts, blocked dependencies).
+
+## Open Issues from Implementation
+- Summarize issues reported by the Implementing Agent in `.sdd/issues.md` (conflicts, missing decisions, unclear tickets).
+- For each issue, decide whether to:
+  - Update this specification (and record an ADR if it is a decision).
+  - Update or close the corresponding ticket(s).
+  - Defer as technical debt (and create a janitor ticket).
 
 ## SLOs & Guardrails
 - SLOs: latency/throughput/error rate

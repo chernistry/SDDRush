@@ -16,9 +16,10 @@ Create a comprehensive best‑practices guide for {{PROJECT_NAME}} that is:
 1) Current — relevant to {{YEAR}}; mark deprecated/outdated items.
 2) Specific — tailored to {{TECH_STACK}} and {{DOMAIN}}.
 3) Practical — include concrete commands/config/code.
-4) Complete — cover architecture, quality, ops, and security.
+4) Complete — cover architecture, quality, ops, security, and technical debt.
 5) Risk‑aware — define a simple metric profile (PerfGain, SecRisk, DevTime, Maintainability, Cost, DX) with indicative weights for this project, plus 3–5 key risks with High/Medium/Low labels.
-6) Verification‑ready — for each major recommendation, note how to validate it (tests, metrics, experiments) so the architect/agent can reuse these checks.
+6) Conflict‑aware — explicitly call out conflicting or mutually exclusive practices and alternative patterns.
+7) Verification‑ready — for each major recommendation, note how to validate it (tests, metrics, experiments) so the architect/agent can reuse these checks.
 
 ## Output Structure (Markdown)
 ### 1. TL;DR (≤10 bullets)
@@ -39,6 +40,14 @@ Pattern A — [NAME] (MVP)
 
 Pattern B — [NAME] (Scale‑up)
 - When to use; Migration from A
+
+### 3.1 Conflicting Practices & Alternatives
+- List concrete areas where reputable sources disagree (e.g., sync vs async I/O, ORMs vs SQL, service boundaries, caching strategy).
+- For each conflict, summarize:
+  - Options (A/B/…)
+  - When each is preferable (context/scale/risk profile)
+  - Key trade‑offs and risks (PerfGain, SecRisk, DevTime, Maintainability, Cost, DX)
+  - Any hard constraints from the project description (Definition of Done, compliance, budgets) that favor one option.
 
 ### 4. Priority 1 — [AREA]
 Why → relation to goals and mitigated risks
@@ -86,6 +95,11 @@ Repeat the structure from 4.
 ### 17. Verification
 - Self‑check: how to validate key recommendations (scripts, smoke tests, benchmarks)
 - Confidence: [High/Medium/Low] per section
+
+### 18. Technical Debt & Migration Guidance
+- Typical sources of technical debt for {{TECH_STACK}}/{{DOMAIN}}.
+- Recommended strategies to keep debt under control over time (continuous refactoring, migration paths, feature flags).
+- When to introduce dedicated “janitor” tasks and what they should look like.
 
 ## Requirements
 1) No chain‑of‑thought. Provide final answers with short, verifiable reasoning.
