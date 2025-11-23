@@ -12,7 +12,7 @@ Minimal, pragmatic toolkit to kick off Spec‑Driven Development (SDD) with prom
 flowchart LR
   A[Task] --> B[Description]
   B --> C[Research]
-  C --> D[Architecture (+ Coding Rules)]
+  C --> D["Architecture (+ Coding Rules)"]
   D --> E[Agent]
   E --> F[Tickets]
   F --> G[Code]
