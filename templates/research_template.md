@@ -11,6 +11,25 @@ Instruction for AI: produce a practical, evidence‑backed best practices guide 
 - Domain: {{DOMAIN}}
 - Year: {{YEAR}}
 
+## CRITICAL: Scope Analysis (DO THIS FIRST)
+
+Before generating any content, analyze the goal/description for scope signals:
+
+**Detect Appetite:**
+- `Small` signals: "minor", "small", "tiny", "quick fix", "tweak", "мелкие", "небольшие", "слегка"
+- `Batch` signals: "several", "few changes", "update", "improve" (without "completely")
+- `Big` signals: "refactor", "redesign", "rewrite", "major", "complete overhaul"
+
+**Detect Constraints:**
+- Look for: "DO NOT", "don't", "NOT", "never", "without", "без", "не делай", "не меняй"
+- Extract the full constraint phrase (e.g., "DO NOT REDESIGN COMPLETELY")
+
+**Your output MUST respect these signals:**
+- If goal says "minor improvements", do NOT suggest architectural overhauls.
+- If goal says "DO NOT X", explicitly list X as an Anti-Pattern.
+
+---
+
 ## Task
 Create a comprehensive best‑practices guide for {{PROJECT_NAME}} that is:
 1) Current — relevant to {{YEAR}}; mark deprecated/outdated items.
@@ -22,26 +41,32 @@ Create a comprehensive best‑practices guide for {{PROJECT_NAME}} that is:
 7) Verification‑ready — for each major recommendation, note how to validate it (tests, metrics, experiments) so the architect/agent can reuse these checks.
 
 ## Output Structure (Markdown)
-### 1. TL;DR (≤10 bullets)
+
+### 1. Scope Analysis Summary
+- Appetite: [Small/Batch/Big]
+- Key Constraints: [List]
+- Reasoning: [Why]
+
+### 2. TL;DR (≤10 bullets)
 - Key decisions and patterns (why, trade‑offs, MVP vs later)
 - Observability posture; Security posture; CI/CD; Performance & Cost guardrails
 - What changed in {{YEAR}}; SLOs summary
 
-### 2. Landscape — What’s new in {{YEAR}}
+### 3. Landscape — What’s new in {{YEAR}}
 For {{TECH_STACK}}:
 - Standards/framework updates; deprecations/EOL; pricing changes
 - Tooling maturity: testing, observability, security
 - Cloud/vendor updates
-- Alternative approaches and when to choose them
+- **Red flags & traps**: widespread but now-discouraged practices, legacy patterns to avoid
 
-### 3. Architecture Patterns (2–4 for {{DOMAIN}} with {{TECH_STACK}})
+### 4. Architecture Patterns (2–4 for {{DOMAIN}} with {{TECH_STACK}})
 Pattern A — [NAME] (MVP)
 - When to use; Steps; Pros/Cons; Optional later features
 
 Pattern B — [NAME] (Scale‑up)
 - When to use; Migration from A
 
-### 3.1 Conflicting Practices & Alternatives
+### 5. Conflicting Practices & Alternatives
 - List concrete areas where reputable sources disagree (e.g., sync vs async I/O, ORMs vs SQL, service boundaries, caching strategy).
 - For each conflict, summarize:
   - Options (A/B/…)
@@ -49,7 +74,7 @@ Pattern B — [NAME] (Scale‑up)
   - Key trade‑offs and risks (PerfGain, SecRisk, DevTime, Maintainability, Cost, DX)
   - Any hard constraints from the project description (Definition of Done, compliance, budgets) that favor one option.
 
-### 4. Priority 1 — [AREA]
+### 6. Priority 1 — [AREA]
 Why → relation to goals and mitigated risks
 Scope → In/Out
 Decisions → with rationale and alternatives
@@ -57,46 +82,56 @@ Implementation outline → 3–6 concrete steps
 Guardrails & SLOs → metrics and limits/quotas
 Failure Modes & Recovery → detection→remediation→rollback
 
-### 5–6. Priority 2/3 — [AREA]
-Repeat the structure from 4.
+### 7–8. Priority 2/3 — [AREA]
+Repeat the structure from 6.
 
-### 7. Testing Strategy (for {{TECH_STACK}})
+### 9. Testing Strategy (for {{TECH_STACK}})
 - Unit / Integration / E2E / Performance / Security
 - Frameworks, patterns, coverage targets
+- When to stub/mock vs use real dependencies
 
-### 8. Observability & Operations
+### 10. Observability & Operations
 - Metrics, Logging, Tracing, Alerting, Dashboards
+- Structured logging (JSON, no secrets) with correlation IDs
+- Health endpoints, SLIs/SLOs
 
-### 9. Security Best Practices
+### 11. Security Best Practices
 - AuthN/AuthZ, Data protection (PII, encryption), Secrets, Dependency security
 - OWASP Top 10 ({{YEAR}}) coverage; Compliance (if any)
+- SSRF/input validation; allowlists for external domains
 
-### 10. Performance & Cost
+### 12. Performance & Cost
 - Budgets (concrete numbers), optimization techniques, cost monitoring, resource limits
+- Profiling strategy and tools
 
-### 11. CI/CD Pipeline
+### 13. CI/CD Pipeline
 - Build/Test/Deploy; quality gates; environments
+- Rollback strategy
 
-### 12. Code Quality Standards
+### 14. Code Quality Standards
 - Style, linters/formatters, typing, docs, review, refactoring
 
-### 13. Reading List (with dates and gists)
-- [Source] (Last updated: YYYY‑MM‑DD) — gist
-
-### 14. Decision Log (ADR style)
-- [ADR‑001] [Choice] over [alternatives] because [reason]
-
 ### 15. Anti‑Patterns to Avoid
-- For {{TECH_STACK}}/{{DOMAIN}} with “what, why bad, what instead”
+For {{TECH_STACK}}/{{DOMAIN}}:
+- **What**: concrete code/config/systems examples
+- **Why bad now**: broken assumptions, perf/regulatory/security risks
+- **What instead**: actionable alternatives or migration paths
 
-### 16. Evidence & Citations
+### 16. Red Flags & Smells
+How to recognize a project in trouble:
+- Architectural smells (god files, tight coupling)
+- Operational smells (no timeouts, no retries, no metrics)
+- Process smells (no tests, no CI, dangerous deploys)
+- For each: how to detect, minimal remediation, when to create janitor ticket
+
+### 17. Evidence & Citations
 - List sources inline near claims; add links; include “Last updated” dates when possible.
 
-### 17. Verification
+### 18. Verification
 - Self‑check: how to validate key recommendations (scripts, smoke tests, benchmarks)
 - Confidence: [High/Medium/Low] per section
 
-### 18. Technical Debt & Migration Guidance
+### 19. Technical Debt & Migration Guidance
 - Typical sources of technical debt for {{TECH_STACK}}/{{DOMAIN}}.
 - Recommended strategies to keep debt under control over time (continuous refactoring, migration paths, feature flags).
 - When to introduce dedicated “janitor” tasks and what they should look like.
@@ -106,9 +141,3 @@ Repeat the structure from 4.
 2) If browsing is needed, state what to check and why; produce a provisional answer with TODOs.
 3) Keep it implementable today; prefer defaults that reduce complexity.
 4) Do not fabricate libraries, APIs, or data; if unsure or the evidence is weak, mark the item as TODO/Low confidence and suggest concrete sources to verify.
-
-## Additional Context
-{{ADDITIONAL_CONTEXT}}
-
----
-Start the research now and produce the guide for {{PROJECT_NAME}}.

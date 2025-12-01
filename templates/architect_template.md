@@ -11,19 +11,36 @@ Context:
 - Best practices: see `.sdd/best_practices.md`
 - Definition of Done: see `.sdd/project.md` (section “Definition of Done”)
 
-Operating Principles:
-- Clarity first: plan → solution with brief, checkable reasoning
-- MVP focus: pick minimal-sufficient solution; note scale-up path
-- Verification: include tests/samples/validators
-- Security: least privilege, use stack's secrets store
-- Reliability: idempotency, retries with backoff+jitter, timeouts
-- Cost/latency: budgets and caps; avoid over-engineering
-- DoD alignment: architecture and tickets must satisfy the Definition of Done from `.sdd/project.md`.
+## CRITICAL: Scope Analysis (DO THIS FIRST)
+
+Before generating any content, analyze the goal/description for scope signals:
+
+**Detect Appetite:**
+- `Small` signals: "minor", "small", "tiny", "quick fix", "tweak", "мелкие", "небольшие", "слегка"
+- `Batch` signals: "several", "few changes", "update", "improve" (without "completely")
+- `Big` signals: "refactor", "redesign", "rewrite", "major", "complete overhaul"
+
+**Detect Constraints:**
+- Look for: "DO NOT", "don't", "NOT", "never", "without", "без", "не делай", "не меняй"
+- Extract the full constraint phrase (e.g., "DO NOT REDESIGN COMPLETELY")
+
+**Your output MUST respect these signals:**
+- If goal says "minor improvements" → architect.md should describe MINOR changes only.
+- If goal says "DO NOT X" → architect.md MUST NOT include X in the plan.
+- If appetite is Small → Goals section should have 1-3 small goals, not 10+ screens.
+
+---
 
 Task:
 Produce architect.md as the source of truth for implementation.
 
 Output Structure (Markdown):
+
+## Scope Analysis Summary
+- Appetite: [Small/Batch/Big]
+- Key Constraints: [List]
+- Reasoning: [Why]
+
 ## Hard Constraints (if applicable)
 - Domain-specific prohibitions (e.g., no heuristics, no regex parsers, tool-first grounding)
 - Compliance requirements (GDPR, accessibility, security standards)
@@ -34,6 +51,7 @@ Output Structure (Markdown):
 - Required secrets, API keys, credentials, licenses
 - Environment setup, corpora, test data availability
 - Dependency readiness (external services, databases)
+
 ## Goals & Non‑Goals
 - Goals: [1–5]
 - Non‑Goals: [1–5]
@@ -68,17 +86,6 @@ Output Structure (Markdown):
 - Map structure, entry points, integration boundaries, and cross‑cutting concerns.
 - Identify dead code, high‑complexity modules, and extension points (minimal change surface).
 - Output a short tree of key files and where your plan plugs in.
-
-**Example Project Structure (if helpful):**
-```
-project/
-├── src/
-│   ├── core/
-│   ├── api/
-│   └── utils/
-├── tests/
-└── docs/
-```
 
 ## MCDM for Major Choices
 - Criteria: PerfGain, SecRisk, DevTime, Maintainability, Cost, Scalability, DX
@@ -283,12 +290,17 @@ Provide concrete commands for common tasks (adapt to {{TECH_STACK}}):
 - [ ] Observability in place (logs, metrics, traces)
 - [ ] Documentation updated (API contracts, deployment notes)
 
-## Hidden Quality Loop (internal, do not include in output)
-PE2/Chain‑of‑Verification self-check (≤3 iterations):
-1. Diagnose: compare the spec against Hard Constraints, Metric Profile & Strategic Risk Map, SLOs, and best_practices; identify up to 3 concrete weaknesses (missing tests/contracts, risky assumptions, perf/security gaps).
-2. Refine: make minimal, surgical edits (≤60 words per iteration) to address these weaknesses without changing the overall structure.
-3. Stop when saturated or when further changes would add complexity without clear benefit.
+---
 
-Requirements
-1) No chain‑of‑thought. Provide final decisions with brief, verifiable reasoning.
-2) Be specific to {{TECH_STACK}} and up‑to‑date for {{YEAR}}; flag outdated items.
+## Quality Checklist (Self-Verify Before Output)
+
+Before outputting, verify:
+- [ ] Both documents have ALL required sections with exact headers
+- [ ] Best practices are specific to {{TECH_STACK}}, not generic
+- [ ] Anti-patterns section has concrete examples
+- [ ] Architecture references best practices decisions
+- [ ] Backlog tickets are ordered by dependency
+- [ ] No placeholder text like "[TODO]" or "[FILL IN]"
+- [ ] Commands are real, not placeholders
+- [ ] All recommendations have verification method noted
+- [ ] Conflicting practices are explicitly resolved with rationale

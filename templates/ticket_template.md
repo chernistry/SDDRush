@@ -7,6 +7,14 @@ Use this as a canonical structure when creating tickets in `.sdd/backlog/tickets
 
 Spec version: vX.Y / <commit or ADR reference>
 
+## User Problem
+- What user pain point or need does this address?
+- Why is this important now?
+
+## Outcome / Success Signals
+- How will we know this is working?
+- Observable behavior changes or metric improvements.
+
 ## Context
 - Links to relevant sections in `.sdd/architect.md` (components, ADRs, API contracts, quality standards).
 - Optional links to `.sdd/project.md` (goals, Definition of Done).
@@ -35,4 +43,3 @@ Spec version: vX.Y / <commit or ADR reference>
 - Upstream tickets: ...
 - Downstream tickets: ...
 ```
-

@@ -15,14 +15,27 @@ Required reading (use fs_read to access):
 - `.sdd/backlog/tickets/open/` — tickets sorted by prefix `nn-` and dependency order
 
 Operating rules:
-- Always consult architect.md (architecture + coding standards) first.
-- Execute backlog tasks by dependency order.
-- Write minimal viable code (MVP) with tests.
-- Respect formatters, linters, and conventions.
-- Update/clarify specs before changes if required.
-- No chain‑of‑thought disclosure; provide final results + brief rationale.
-- Keep diffs minimal; refactor only what’s touched unless fixing clear bad practice.
-- When you discover significant technical debt outside the current ticket scope, do not silently expand the scope; instead, propose or create a small “janitor” ticket for focused cleanup.
+- **Always consult architect.md** (architecture + coding standards) first.
+- **Execute backlog tasks by dependency order.**
+- **Write minimal viable code (MVP)** with tests.
+- **Respect formatters, linters, and conventions.**
+- **Update/clarify specs before changes** if required.
+- **No chain‑of‑thought disclosure**; provide final results + brief rationale.
+- **Keep diffs minimal**; refactor only what’s touched unless fixing clear bad practice.
+- **When you discover significant technical debt** outside the current ticket scope, do not silently expand the scope; instead, propose or create a small “janitor” ticket for focused cleanup.
+
+## Error-First Strategy
+1. **Check Diagnostics First**: If there are compile errors or test failures, FIX THEM BEFORE making new changes.
+2. **Prioritize**:
+   - **Syntax/LSP Errors**: You cannot run tests if the code doesn't compile. Fix these first.
+   - **Test Failures**: Once it compiles, fix failing tests.
+3. **Explore before editing**: Use `list_files` and `read_file` to understand the existing implementation before writing code. Do not invent file names or exports.
+
+## Code Quality Standards (Senior Level)
+- **Structure**: Refuse to create flat file structures for non-trivial apps. Organize by feature or type (e.g., `src/components`, `src/hooks`, `src/utils`).
+- **Styling**: Do NOT use hardcoded hex/rgb values in components. Define CSS variables in a global stylesheet and use `var(--token)`.
+- **Resilience**: Ensure the application root is wrapped in an Error Boundary.
+- **Safety**: No hardcoded secrets. No silent error swallowing.
 
 Per‑task process:
 1) Read the task and its ticket file in full. Verify that it clearly defines Objective, DoD, Steps, Affected files, Tests, Risks, and Dependencies. If key parts are missing or inconsistent with `.sdd/project.md` or `.sdd/architect.md`, stop and follow the Snitch Protocol instead of guessing. Then outline a short plan → confirm.
