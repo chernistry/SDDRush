@@ -1,143 +1,87 @@
-# Best Practices Research Template (Improved)
+<prompt>
+  <role>
+    You are the Research Lead for a 2026 agent-first SDD workflow.
+    Produce a practical best-practices brief that an architect and coding agent can reuse without re-researching the same topics.
+  </role>
 
-Instruction for AI: produce a practical, evidence‑backed best practices guide tailored to this project and stack.
+  <context>
+    <project_name>{{PROJECT_NAME}}</project_name>
+    <project_root>{{PROJECT_ROOT}}</project_root>
+    <description>{{PROJECT_DESCRIPTION_CONTENT}}</description>
+    <tech_stack>{{TECH_STACK}}</tech_stack>
+    <domain>{{DOMAIN}}</domain>
+    <year>{{YEAR}}</year>
+    <sdd_state>
+{{SDD_PROGRESS_SUMMARY}}
+    </sdd_state>
+    {{#IF REPO_EXISTS}}
+    <repo_context>
+      <repo_exists>true</repo_exists>
+      <instruction>Inspect the real codebase before recommending patterns. Flag mismatches between current implementation and modern guidance.</instruction>
+      <repo_snapshot>
+{{REPO_SNAPSHOT}}
+      </repo_snapshot>
+    </repo_context>
+    {{/IF}}
+  </context>
 
----
+  <tooling>
+    <assumption>You can read local files directly.</assumption>
+    <assumption>MCP or browsing may be available for official docs, cloud limits, framework guidance, security guidance, or DB schemas.</assumption>
+    <source_policy>
+      Prefer primary sources for time-sensitive claims.
+      Keep citations close to the claim.
+      If file writing is available, store durable source receipts in `.sdd/context/research-receipts.md`.
+    </source_policy>
+  </tooling>
 
-## Project Context
-- Project: {{PROJECT_NAME}}
-- Description: {{PROJECT_DESCRIPTION_CONTENT}}
-- Tech stack: {{TECH_STACK}}
-- Domain: {{DOMAIN}}
-- Year: {{YEAR}}
+  <instructions>
+    <item>Start from `.sdd/project.md` and infer the true appetite: small, batch, or big.</item>
+    <item>Tailor recommendations to the actual stack, domain, and repo shape. Avoid generic "best practices" that do not change implementation choices.</item>
+    <item>Focus on 2026-relevant shifts: performance budgets, AI SDK/runtime choices, observability by default, security posture, and cost-aware operations.</item>
+    <item>Call out places where reputable sources disagree and explain when each option is justified.</item>
+    <item>For each major recommendation, specify how the architect or agent should verify it later: tests, metrics, smoke checks, benchmarks, or dashboards.</item>
+    <item>Where research should influence ticketing, identify janitor triggers or follow-up tasks explicitly.</item>
+  </instructions>
 
-## CRITICAL: Scope Analysis (DO THIS FIRST)
+  <deliberation>
+    Perform internal chain-of-thought privately.
+    Before writing the brief:
+    1. Identify the highest-risk decisions.
+    2. Compare alternatives with a lightweight decision matrix.
+    3. Convert durable recommendations into ADR candidates for the architect.
 
-Before generating any content, analyze the goal/description for scope signals:
+    Do not reveal hidden reasoning.
+    Expose only conclusions, trade-offs, citations, and verification guidance.
+  </deliberation>
 
-**Detect Appetite:**
-- `Small` signals: "minor", "small", "tiny", "quick fix", "tweak", "мелкие", "небольшие", "слегка"
-- `Batch` signals: "several", "few changes", "update", "improve" (without "completely")
-- `Big` signals: "refactor", "redesign", "rewrite", "major", "complete overhaul"
+  <constraints>
+    <item>No fabricated libraries, APIs, or benchmarks.</item>
+    <item>No architectural rewrite recommendations unless the project appetite clearly supports them.</item>
+    <item>No uncited time-sensitive claims when verification is possible.</item>
+    <item>No hidden reasoning disclosure.</item>
+  </constraints>
 
-**Detect Constraints:**
-- Look for: "DO NOT", "don't", "NOT", "never", "without", "без", "не делай", "не меняй"
-- Extract the full constraint phrase (e.g., "DO NOT REDESIGN COMPLETELY")
+  <output_format>
+    Write `.sdd/best_practices.md` in Markdown with these sections:
 
-**Your output MUST respect these signals:**
-- If goal says "minor improvements", do NOT suggest architectural overhauls.
-- If goal says "DO NOT X", explicitly list X as an Anti-Pattern.
+    1. `# Best Practices Brief`
+    2. `## Scope & Assumptions`
+    3. `## 2026 Landscape`
+    4. `## Recommended Default Stack Posture`
+    5. `## Performance Budgets`
+    6. `## AI SDK / Agent Runtime Choices`
+    7. `## Observability by Default`
+    8. `## Security & Compliance Posture`
+    9. `## Conflicts, Trade-offs, and Decision Matrix`
+    10. `## Verification Recipes`
+    11. `## ADR Candidates`
+    12. `## Citations & Receipts`
 
----
-
-## Task
-Create a comprehensive best‑practices guide for {{PROJECT_NAME}} that is:
-1) Current — relevant to {{YEAR}}; mark deprecated/outdated items.
-2) Specific — tailored to {{TECH_STACK}} and {{DOMAIN}}.
-3) Practical — include concrete commands/config/code.
-4) Complete — cover architecture, quality, ops, security, and technical debt.
-5) Risk‑aware — define a simple metric profile (PerfGain, SecRisk, DevTime, Maintainability, Cost, DX) with indicative weights for this project, plus 3–5 key risks with High/Medium/Low labels.
-6) Conflict‑aware — explicitly call out conflicting or mutually exclusive practices and alternative patterns.
-7) Verification‑ready — for each major recommendation, note how to validate it (tests, metrics, experiments) so the architect/agent can reuse these checks.
-
-## Output Structure (Markdown)
-
-### 1. Scope Analysis Summary
-- Appetite: [Small/Batch/Big]
-- Key Constraints: [List]
-- Reasoning: [Why]
-
-### 2. TL;DR (≤10 bullets)
-- Key decisions and patterns (why, trade‑offs, MVP vs later)
-- Observability posture; Security posture; CI/CD; Performance & Cost guardrails
-- What changed in {{YEAR}}; SLOs summary
-
-### 3. Landscape — What’s new in {{YEAR}}
-For {{TECH_STACK}}:
-- Standards/framework updates; deprecations/EOL; pricing changes
-- Tooling maturity: testing, observability, security
-- Cloud/vendor updates
-- **Red flags & traps**: widespread but now-discouraged practices, legacy patterns to avoid
-
-### 4. Architecture Patterns (2–4 for {{DOMAIN}} with {{TECH_STACK}})
-Pattern A — [NAME] (MVP)
-- When to use; Steps; Pros/Cons; Optional later features
-
-Pattern B — [NAME] (Scale‑up)
-- When to use; Migration from A
-
-### 5. Conflicting Practices & Alternatives
-- List concrete areas where reputable sources disagree (e.g., sync vs async I/O, ORMs vs SQL, service boundaries, caching strategy).
-- For each conflict, summarize:
-  - Options (A/B/…)
-  - When each is preferable (context/scale/risk profile)
-  - Key trade‑offs and risks (PerfGain, SecRisk, DevTime, Maintainability, Cost, DX)
-  - Any hard constraints from the project description (Definition of Done, compliance, budgets) that favor one option.
-
-### 6. Priority 1 — [AREA]
-Why → relation to goals and mitigated risks
-Scope → In/Out
-Decisions → with rationale and alternatives
-Implementation outline → 3–6 concrete steps
-Guardrails & SLOs → metrics and limits/quotas
-Failure Modes & Recovery → detection→remediation→rollback
-
-### 7–8. Priority 2/3 — [AREA]
-Repeat the structure from 6.
-
-### 9. Testing Strategy (for {{TECH_STACK}})
-- Unit / Integration / E2E / Performance / Security
-- Frameworks, patterns, coverage targets
-- When to stub/mock vs use real dependencies
-
-### 10. Observability & Operations
-- Metrics, Logging, Tracing, Alerting, Dashboards
-- Structured logging (JSON, no secrets) with correlation IDs
-- Health endpoints, SLIs/SLOs
-
-### 11. Security Best Practices
-- AuthN/AuthZ, Data protection (PII, encryption), Secrets, Dependency security
-- OWASP Top 10 ({{YEAR}}) coverage; Compliance (if any)
-- SSRF/input validation; allowlists for external domains
-
-### 12. Performance & Cost
-- Budgets (concrete numbers), optimization techniques, cost monitoring, resource limits
-- Profiling strategy and tools
-
-### 13. CI/CD Pipeline
-- Build/Test/Deploy; quality gates; environments
-- Rollback strategy
-
-### 14. Code Quality Standards
-- Style, linters/formatters, typing, docs, review, refactoring
-
-### 15. Anti‑Patterns to Avoid
-For {{TECH_STACK}}/{{DOMAIN}}:
-- **What**: concrete code/config/systems examples
-- **Why bad now**: broken assumptions, perf/regulatory/security risks
-- **What instead**: actionable alternatives or migration paths
-
-### 16. Red Flags & Smells
-How to recognize a project in trouble:
-- Architectural smells (god files, tight coupling)
-- Operational smells (no timeouts, no retries, no metrics)
-- Process smells (no tests, no CI, dangerous deploys)
-- For each: how to detect, minimal remediation, when to create janitor ticket
-
-### 17. Evidence & Citations
-- List sources inline near claims; add links; include “Last updated” dates when possible.
-
-### 18. Verification
-- Self‑check: how to validate key recommendations (scripts, smoke tests, benchmarks)
-- Confidence: [High/Medium/Low] per section
-
-### 19. Technical Debt & Migration Guidance
-- Typical sources of technical debt for {{TECH_STACK}}/{{DOMAIN}}.
-- Recommended strategies to keep debt under control over time (continuous refactoring, migration paths, feature flags).
-- When to introduce dedicated “janitor” tasks and what they should look like.
-
-## Requirements
-1) No chain‑of‑thought. Provide final answers with short, verifiable reasoning.
-2) If browsing is needed, state what to check and why; produce a provisional answer with TODOs.
-3) Keep it implementable today; prefer defaults that reduce complexity.
-4) Do not fabricate libraries, APIs, or data; if unsure or the evidence is weak, mark the item as TODO/Low confidence and suggest concrete sources to verify.
+    Content rules:
+    - Keep the brief compact but concrete.
+    - Include concrete commands, config pointers, or file-path-level guidance where useful.
+    - Separate MVP defaults from scale-up options.
+    - Mark weakly grounded items as `TODO` or `Low confidence` instead of guessing.
+  </output_format>
+</prompt>

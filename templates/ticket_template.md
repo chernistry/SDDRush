@@ -1,45 +1,50 @@
-# Ticket Template (SDD)
+# Ticket Template (SDD 2.0)
 
-Use this as a canonical structure when creating tickets in `.sdd/backlog/tickets/open/`.
+Use this as the canonical structure for files in `.sdd/backlog/open/` and `.sdd/backlog/closed/`.
 
 ```markdown
 # Ticket: <nn> <short-title>
+Status: open
+Type: feature
+Slug: <kebab-slug>
+Depends on: <comma-separated ids or none>
+Spec refs: <comma-separated refs or none>
+Source: .sdd/architect.md
 
-Spec version: vX.Y / <commit or ADR reference>
-
-## User Problem
-- What user pain point or need does this address?
-- Why is this important now?
-
-## Outcome / Success Signals
-- How will we know this is working?
-- Observable behavior changes or metric improvements.
-
-## Context
-- Links to relevant sections in `.sdd/architect.md` (components, ADRs, API contracts, quality standards).
-- Optional links to `.sdd/project.md` (goals, Definition of Done).
+## Summary
+One short paragraph describing why this ticket exists.
 
 ## Objective & Definition of Done
-- One paragraph summary of intent.
-- Bullet list of concrete outcomes that must be true when this ticket is “Done”.
+Short objective paragraph.
+- Observable completion condition 1
+- Observable completion condition 2
 
 ## Steps
-1. ...
-2. ...
-3. ...
+1. Concrete implementation step.
+2. Concrete implementation step.
+3. Concrete implementation step.
 
-## Affected files/modules
-- `path/to/file1.ext`
-- `path/to/file2.ext`
+## Affected Paths
+- path/to/file.ext
+- path/to/other.ext
 
-## Tests
-- Test cases to add/update.
-- Commands to run (e.g. `npm test`, `pytest`, `go test ./...`, etc.).
+## Tests & Verification
+- Command or test case.
+- Smoke check, benchmark, or dashboard to inspect.
 
 ## Risks & Edge Cases
-- Known risks, edge cases, and failure modes to handle.
+- Failure mode or edge case.
 
-## Dependencies
-- Upstream tickets: ...
-- Downstream tickets: ...
+## Janitor Signals
+- path_exists: path/to/file.ext
+- path_contains: path/to/file.ext :: def important_symbol(
+
+## Agent Notes
+- Reserved for the implementing agent: progress, receipts, commands run, blockers.
 ```
+
+Rules:
+- Keep ids zero-padded so file ordering matches dependency order.
+- Keep tickets agent-executable in one focused work session.
+- Keep `Janitor Signals` concrete and machine-checkable.
+- Move completed tickets to `.sdd/backlog/closed/` with `Status: closed`.

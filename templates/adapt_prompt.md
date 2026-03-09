@@ -1,128 +1,54 @@
-# Prompt Adaptation Template
+<prompt>
+  <role>
+    You are adapting an existing prompt into this project's stack, domain, and repo reality without changing its underlying workflow.
+  </role>
 
-Instruction for AI: adapt the provided prompt to the specific project while preserving its structure and logic.
+  <context>
+    <project_name>{{PROJECT_NAME}}</project_name>
+    <project_root>{{PROJECT_ROOT}}</project_root>
+    <description>{{PROJECT_DESCRIPTION_CONTENT}}</description>
+    <tech_stack>{{TECH_STACK}}</tech_stack>
+    <domain>{{DOMAIN}}</domain>
+    <repo_exists>{{REPO_EXISTS}}</repo_exists>
+    <additional_context>{{ADDITIONAL_CONTEXT}}</additional_context>
+    {{#IF REPO_EXISTS}}
+    <repo_snapshot>
+{{REPO_SNAPSHOT}}
+    </repo_snapshot>
+    {{/IF}}
+  </context>
 
----
+  <instructions>
+    <item>Preserve the original structure, intent, and workflow.</item>
+    <item>Make only surgical edits: stack references, file paths, tool names, domain examples, and constraints.</item>
+    <item>If the prompt assumes manual copy-paste and the target environment has file tools, upgrade it to a direct file-read/file-write flow.</item>
+    <item>If the prompt is missing MCP guidance but the task benefits from external grounding, add a short MCP/source policy.</item>
+    <item>Keep the resulting prompt token-efficient. Prefer precise substitutions over expansions.</item>
+  </instructions>
 
-## Task
-Adapt the prompt for project {{PROJECT_NAME}} with surgical edits:
-- KEEP the complete structure, formatting, and length.
-- REPLACE only technology/domain references.
-- ADAPT code examples to the target stack.
-- DO NOT TRIM content — prefer 1:1 replacements.
+  <replacements>
+    <stack>{{TECH_REPLACEMENTS}}</stack>
+    <domain>{{DOMAIN_REPLACEMENTS}}</domain>
+    <architecture>{{ARCHITECTURE_REPLACEMENTS}}</architecture>
+    <paths>{{PATH_REPLACEMENTS}}</paths>
+    <quality>{{QUALITY_REPLACEMENTS}}</quality>
+    <testing>{{TESTING_REPLACEMENTS}}</testing>
+    <observability>{{OBSERVABILITY_REPLACEMENTS}}</observability>
+  </replacements>
 
-## Project Context
-- Project: {{PROJECT_NAME}}
-- Description: {{PROJECT_DESCRIPTION_CONTENT}}
-- Stack: {{TECH_STACK}}
-- Domain: {{DOMAIN}}
+  <constraints>
+    <item>Do not trim major sections unless they are genuinely irrelevant.</item>
+    <item>Do not leave stale technology or path references behind.</item>
+    <item>Do not expose hidden reasoning.</item>
+  </constraints>
 
-## Specific Replacements
-### 1) Stack & Technologies
-{{TECH_REPLACEMENTS}}
-Example:
-```
-Node.js 20 LTS → Python 3.12+
-TypeScript → Python with type hints
-LangGraph.js → LangGraph (Python)
-Zod → Pydantic
-Jest → pytest
-```
+  <output_format>
+    Return the fully adapted prompt only.
+    Preserve headings, code blocks, and overall order.
+    Update examples, commands, paths, and tooling to match this project.
+  </output_format>
 
-### 2) Domain & Business Logic
-{{DOMAIN_REPLACEMENTS}}
-Example:
-```
-travel workflows → document workflows
-brands/domains → collections/sources
-scraping/search → retrieval
-```
-
-### 3) Architectural Patterns
-{{ARCHITECTURE_REPLACEMENTS}}
-Example:
-```
-Crawlee (PlaywrightCrawler) → remove (not used)
-Temporal/Step Functions → Prefect flows
-Vectara → Qdrant
-```
-
-### 4) Paths & Project Structure
-{{PATH_REPLACEMENTS}}
-Example:
-```
-/Users/sasha/.../navan/ → /Users/sasha/.../meulex/
-src/services/ → app/services/
-```
-
-### 5) Quality & Standards
-{{QUALITY_REPLACEMENTS}}
-Example:
-```
-strict TypeScript → strict type hints
-TSDoc → Google‑style docstrings
-ESLint → ruff/black
-```
-
-### 6) Testing & CI/CD
-{{TESTING_REPLACEMENTS}}
-Example:
-```
-Jest/Supertest → pytest/unittest
-Testing Library → pytest fixtures
-```
-
-### 7) Observability & Monitoring
-{{OBSERVABILITY_REPLACEMENTS}}
-Example:
-```
-Langfuse → OpenTelemetry
-Bottleneck → tenacity + asyncio patterns
-```
-
-## Adaptation Rules
-1) Structure
-   - Keep all sections and headings
-   - Keep formatting (lists, tables, code blocks)
-   - Keep internal logic and order
-
-2) Replacements
-   - Replace technology references 1:1
-   - Adapt code to target language/framework
-   - Update imports and paths
-   - Adapt metrics and budgets to the project
-
-3) Content
-   - DO NOT remove sections; adapt examples
-   - DO NOT oversimplify logic
-   - Add short comments if clarification is needed
-
-4) Code Examples
-   - Rewrite to target language
-   - Preserve logic and patterns
-   - Idiomatic style; add type hints when applicable
-
-5) Domain Concepts
-   - Replace domain terms consistently
-   - Update examples to the target domain
-   - Preserve level of detail
-
-## Source Prompt to Adapt
-```markdown
+  <source_prompt>
 {{SOURCE_PROMPT}}
-```
-
-## Additional Context
-{{ADDITIONAL_CONTEXT}}
-
----
-
-## Output
-Return the fully adapted prompt with:
-- All replacements applied consistently
-- Adapted code examples
-- Updated paths and imports
-- Preserved structure and formatting
-- Short comments where clarifications were needed
-
-Begin adaptation now.
+  </source_prompt>
+</prompt>

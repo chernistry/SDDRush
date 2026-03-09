@@ -7,7 +7,7 @@ import sys
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "src"))
 
-from sddrush.prompts import main
+from sddrush.status import main
 
 
 if __name__ == "__main__":

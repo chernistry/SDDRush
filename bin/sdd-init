@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # Initialize Single-Project SDD layout inside an existing directory.
-# Usage: bin/sdd-init [<project-dir>] [--path|-p <dir>] [--stack "Python/FastAPI"] [--domain "web"] [--year 2025]
+# Usage: bin/sdd-init [<project-dir>] [--path|-p <dir>] [--stack "Python/FastAPI"] [--domain "web"] [--year 2026]
 
 TARGET_DIR="$(pwd)"
 STACK=""
@@ -20,7 +20,11 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-mkdir -p "$TARGET_DIR/.sdd/prompts" "$TARGET_DIR/.sdd/backlog/tickets/open" "$TARGET_DIR/.sdd/backlog/tickets/closed"
+mkdir -p \
+  "$TARGET_DIR/.sdd/prompts" \
+  "$TARGET_DIR/.sdd/backlog/open" \
+  "$TARGET_DIR/.sdd/backlog/closed" \
+  "$TARGET_DIR/.sdd/context"
 
 PROJECT_NAME="$(basename "$TARGET_DIR")"
 
@@ -55,18 +59,30 @@ List 5–10 concrete conditions that must be true when the project is “Done”
 - Availability / reliability / SLOs: ...
 - Security / compliance: ...
 - Observability / operations: ...
+- AI / agent workflow constraints: ...
+- Cost / quota limits: ...
 MD
 fi
 
-echo "✅ SDD initialized in $TARGET_DIR (.sdd/prompts + .sdd/backlog/tickets/)"
+if [[ ! -f "$TARGET_DIR/.sdd/issues.md" ]]; then
+cat > "$TARGET_DIR/.sdd/issues.md" <<MD
+# SDD Issues
+
+Record spec conflicts, blocked decisions, and missing inputs here.
+MD
+fi
+
+echo "✅ SDD initialized in $TARGET_DIR (.sdd/prompts + .sdd/backlog/ + .sdd/context/)"
 echo ""
 echo "📋 Next steps:"
 echo "1. Edit .sdd/project.md (describe your project)"
 echo "2. Run: python bin/sdd-prompts \"$TARGET_DIR\""
-echo "3. Follow the 3-step flow:"
-echo "   → Step 1: Research (01_research.prompt.md → best_practices.md)"
-echo "   → Step 2: Architect (02_architect.prompt.md → architect.md + tickets)"
-echo "   → Step 3: Agent (03_agent.prompt.md → implement tickets)"
+echo "3. Follow the agent-first flow:"
+echo "   → Step 1: Research (01_research.prompt.md → .sdd/best_practices.md)"
+echo "   → Step 2: Architect (02_architect.prompt.md → .sdd/architect.md with <tickets> appendix)"
+echo "   → Step 3: Sync tickets (python bin/sdd-backlog sync \"$TARGET_DIR\")"
+echo "   → Step 4: Agent (03_agent.prompt.md → implement from .sdd/backlog/open/)"
+echo "   → Step 5: Janitor/Status (python bin/sdd-backlog janitor \"$TARGET_DIR\" && python bin/sdd-status \"$TARGET_DIR\")"
 
 # After initialization, check what's been completed
 if [[ -f "$TARGET_DIR/.sdd/best_practices.md" ]]; then
@@ -81,8 +97,8 @@ else
   echo "   ⏳ Architecture pending"
 fi
 
-OPEN_TICKETS=$(find "$TARGET_DIR/.sdd/backlog/tickets/open" -name "*.md" 2>/dev/null | wc -l | tr -d ' ')
-CLOSED_TICKETS=$(find "$TARGET_DIR/.sdd/backlog/tickets/closed" -name "*.md" 2>/dev/null | wc -l | tr -d ' ')
+OPEN_TICKETS=$(find "$TARGET_DIR/.sdd/backlog/open" -name "*.md" 2>/dev/null | wc -l | tr -d ' ')
+CLOSED_TICKETS=$(find "$TARGET_DIR/.sdd/backlog/closed" -name "*.md" 2>/dev/null | wc -l | tr -d ' ')
 if [[ $OPEN_TICKETS -gt 0 || $CLOSED_TICKETS -gt 0 ]]; then
   echo "   📝 Tickets: $CLOSED_TICKETS closed, $OPEN_TICKETS open"
 fi
