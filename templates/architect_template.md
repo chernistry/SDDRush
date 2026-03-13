@@ -48,6 +48,7 @@
     <item>Convert every material architectural choice into an ADR-style entry with clear consequences and rollback posture.</item>
     <item>Break the work into the minimum useful set of agent-executable tickets. Default to 3-7 tickets unless the project genuinely needs more.</item>
     <item>Each ticket must be independently actionable by a coding agent in one session and must include janitor signals that can later prove completion.</item>
+    <item>If a disputed choice can only be resolved empirically, create a bounded research ticket whose outputs live under `.sdd/researches/` as a manifest plus closeout pack.</item>
     <item>Prefer extending or deleting existing code over adding fresh files when that reduces complexity and keeps the change surface grounded.</item>
   </instructions>
 

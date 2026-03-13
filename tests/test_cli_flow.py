@@ -23,6 +23,21 @@ def run_script(
     )
 
 
+def run_bash_script(
+    script_name: str,
+    *args: str,
+    cwd: Path | None = None,
+) -> subprocess.CompletedProcess[str]:
+    """Run a bash repository script and return the captured result."""
+    return subprocess.run(
+        ["bash", str(REPO_ROOT / "bin" / script_name), *args],
+        cwd=cwd or REPO_ROOT,
+        capture_output=True,
+        text=True,
+        check=True,
+    )
+
+
 def make_project(tmp_path: Path) -> Path:
     """Create a minimal SDD project for CLI tests."""
     project_root = tmp_path / "demo"
@@ -71,6 +86,35 @@ def test_sdd_prompts_renders_xml_flow_with_repo_context(tmp_path: Path) -> None:
     assert "{{#IF" not in architect_prompt
     assert ".sdd/backlog/open" in agent_prompt
     assert "python bin/sdd-backlog janitor" in agent_prompt
+
+
+def test_sdd_init_scaffolds_research_pack_templates(tmp_path: Path) -> None:
+    """Init should scaffold a research packs directory with reusable templates."""
+    project_root = tmp_path / "demo-init"
+
+    run_bash_script(
+        "sdd-init",
+        str(project_root),
+        "--stack",
+        "Python/FastAPI",
+        "--domain",
+        "legal",
+        "--year",
+        "2026",
+    )
+
+    researches_readme = project_root / ".sdd" / "researches" / "README.md"
+    closeout_template = (
+        project_root
+        / ".sdd"
+        / "researches"
+        / "_templates"
+        / "research_closeout_template.md"
+    )
+
+    assert researches_readme.exists()
+    assert "Research Packs" in researches_readme.read_text(encoding="utf-8")
+    assert closeout_template.exists()
 
 
 def test_sdd_backlog_sync_writes_open_tickets_from_architect_xml(tmp_path: Path) -> None:

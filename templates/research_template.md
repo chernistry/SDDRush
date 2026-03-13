@@ -42,6 +42,8 @@
     <item>Call out places where reputable sources disagree and explain when each option is justified.</item>
     <item>For each major recommendation, specify how the architect or agent should verify it later: tests, metrics, smoke checks, benchmarks, or dashboards.</item>
     <item>Where research should influence ticketing, identify janitor triggers or follow-up tasks explicitly.</item>
+    <item>Distinguish lightweight source receipts in `.sdd/context/` from heavier empirical evidence packs in `.sdd/researches/`.</item>
+    <item>When a recommendation depends on measurement rather than documentation, propose a bounded research pack with a manifest, probe plan, and closeout.</item>
   </instructions>
 
   <deliberation>
@@ -77,11 +79,13 @@
     10. `## Verification Recipes`
     11. `## ADR Candidates`
     12. `## Citations & Receipts`
+    13. `## Suggested Research Packs`
 
     Content rules:
     - Keep the brief compact but concrete.
     - Include concrete commands, config pointers, or file-path-level guidance where useful.
     - Separate MVP defaults from scale-up options.
     - Mark weakly grounded items as `TODO` or `Low confidence` instead of guessing.
+    - In `## Suggested Research Packs`, include only measurement-heavy follow-ups that genuinely need durable evidence.
   </output_format>
 </prompt>

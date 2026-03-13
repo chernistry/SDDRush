@@ -46,6 +46,8 @@
     <file path=".sdd/best_practices.md">Research guide and technology guidance.</file>
     <file path=".sdd/architect.md">Source-of-truth architecture and ADR log.</file>
     <file path=".sdd/issues.md">Open spec conflicts and blocked decisions, if present.</file>
+    <directory path=".sdd/researches/">Durable experiment and validation packs, if the project uses them.</directory>
+    <directory path=".sdd/researches/_templates/">Reusable templates for probe, run manifest, and closeout artifacts.</directory>
     <directory path="{{BACKLOG_OPEN_PATH}}">Open tickets ordered by dependency and numeric id.</directory>
   </required_inputs>
 
@@ -71,15 +73,21 @@
       Example: framework migration docs, DB schema definitions, vendor API limits, security guidance, or infra runbooks.
     </step>
     <step order="6">
+      If the ticket depends on measurement, benchmarking, migration safety, or a risky comparison, create a bounded research pack under `.sdd/researches/<ticket-or-topic>_<YYYY-MM-DD>/`.
+      Use the local templates in `.sdd/researches/_templates/` for `run_manifest.md`, `probe.md`, and `closeout.md`.
+      Keep raw outputs and final recommendation in the pack instead of hiding them in chat.
+    </step>
+    <step order="7">
       Implement the smallest production-ready change that satisfies the ticket DoD.
       Add or update tests and run the relevant local checks.
     </step>
-    <step order="7">
+    <step order="8">
       Update the ticket after implementation:
       note changed files, commands run, verification results, and unresolved risks in `## Agent Notes`.
+      If a research pack was created, link it explicitly from `## Agent Notes`.
       If the ticket DoD is satisfied, either move the file to `{{BACKLOG_CLOSED_PATH}}` yourself or leave it in open with accurate janitor signals so `python bin/sdd-backlog janitor {{PROJECT_ROOT}}` can close it safely.
     </step>
-    <step order="8">
+    <step order="9">
       If you discover important cleanup outside scope, do not silently expand the ticket.
       Create a focused janitor ticket in `{{BACKLOG_OPEN_PATH}}` using the canonical ticket template and keep the current ticket narrow.
     </step>
@@ -97,6 +105,7 @@
   <quality_gates>
     <item>Definition of Done from `.sdd/project.md` and the ticket are both satisfied.</item>
     <item>Tests and local checks relevant to the touched surface have been run or explicitly blocked.</item>
+    <item>Performance, quality, or risk claims are backed by a research pack when the ticket depends on measured evidence.</item>
     <item>Agent notes contain enough receipts for another agent to resume without re-discovery.</item>
     <item>Any unresolved ambiguity is recorded in `.sdd/issues.md` with file references and a concrete recommendation.</item>
   </quality_gates>

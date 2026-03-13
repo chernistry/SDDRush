@@ -29,6 +29,7 @@
     <item>Tailor recommendations to the existing repo and actual domain instead of describing generic modern UI patterns.</item>
     <item>Where there are credible disagreements, surface the trade-offs and when each option is correct.</item>
     <item>Provide concrete validation tactics: accessibility audits, performance probes, visual regression checks, interaction tests.</item>
+    <item>Separate lightweight citations from research packs: use `.sdd/context/` for references and `.sdd/researches/` for measured UI probes, visual audits, or experiment closeouts.</item>
   </instructions>
 
   <deliberation>
@@ -49,5 +50,6 @@
     9. `## Verification Recipes`
     10. `## ADR Candidates`
     11. `## Citations`
+    12. `## Suggested Research Packs`
   </output_format>
 </prompt>

@@ -32,6 +32,10 @@ Short objective paragraph.
 - Command or test case.
 - Smoke check, benchmark, or dashboard to inspect.
 
+## Evidence Bundle (optional)
+- `.sdd/researches/<pack>/run_manifest.md`
+- `.sdd/researches/<pack>/closeout.md`
+
 ## Risks & Edge Cases
 - Failure mode or edge case.
 
@@ -47,4 +51,5 @@ Rules:
 - Keep ids zero-padded so file ordering matches dependency order.
 - Keep tickets agent-executable in one focused work session.
 - Keep `Janitor Signals` concrete and machine-checkable.
+- Use `Evidence Bundle` when the ticket depends on probes, benchmarks, or risky comparisons.
 - Move completed tickets to `.sdd/backlog/closed/` with `Status: closed`.

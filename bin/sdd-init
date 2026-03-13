@@ -5,6 +5,8 @@ set -euo pipefail
 # Usage: bin/sdd-init [<project-dir>] [--path|-p <dir>] [--stack "Python/FastAPI"] [--domain "web"] [--year 2026]
 
 TARGET_DIR="$(pwd)"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 STACK=""
 DOMAIN=""
 YEAR="$(date +%Y)"
@@ -24,7 +26,9 @@ mkdir -p \
   "$TARGET_DIR/.sdd/prompts" \
   "$TARGET_DIR/.sdd/backlog/open" \
   "$TARGET_DIR/.sdd/backlog/closed" \
-  "$TARGET_DIR/.sdd/context"
+  "$TARGET_DIR/.sdd/context" \
+  "$TARGET_DIR/.sdd/researches" \
+  "$TARGET_DIR/.sdd/researches/_templates"
 
 PROJECT_NAME="$(basename "$TARGET_DIR")"
 
@@ -72,7 +76,22 @@ Record spec conflicts, blocked decisions, and missing inputs here.
 MD
 fi
 
-echo "✅ SDD initialized in $TARGET_DIR (.sdd/prompts + .sdd/backlog/ + .sdd/context/)"
+if [[ ! -f "$TARGET_DIR/.sdd/researches/README.md" ]]; then
+  cp "$REPO_ROOT/templates/researches_index_template.md" "$TARGET_DIR/.sdd/researches/README.md"
+fi
+
+for research_template in \
+  researches_index_template.md \
+  research_probe_template.md \
+  research_run_manifest_template.md \
+  research_closeout_template.md
+do
+  if [[ ! -f "$TARGET_DIR/.sdd/researches/_templates/$research_template" ]]; then
+    cp "$REPO_ROOT/templates/$research_template" "$TARGET_DIR/.sdd/researches/_templates/$research_template"
+  fi
+done
+
+echo "✅ SDD initialized in $TARGET_DIR (.sdd/prompts + .sdd/backlog/ + .sdd/context/ + .sdd/researches/)"
 echo ""
 echo "📋 Next steps:"
 echo "1. Edit .sdd/project.md (describe your project)"
@@ -82,7 +101,8 @@ echo "   → Step 1: Research (01_research.prompt.md → .sdd/best_practices.md)
 echo "   → Step 2: Architect (02_architect.prompt.md → .sdd/architect.md with <tickets> appendix)"
 echo "   → Step 3: Sync tickets (python bin/sdd-backlog sync \"$TARGET_DIR\")"
 echo "   → Step 4: Agent (03_agent.prompt.md → implement from .sdd/backlog/open/)"
-echo "   → Step 5: Janitor/Status (python bin/sdd-backlog janitor \"$TARGET_DIR\" && python bin/sdd-status \"$TARGET_DIR\")"
+echo "   → Step 5: Create research packs in .sdd/researches/ when a decision depends on measurement"
+echo "   → Step 6: Janitor/Status (python bin/sdd-backlog janitor \"$TARGET_DIR\" && python bin/sdd-status \"$TARGET_DIR\")"
 
 # After initialization, check what's been completed
 if [[ -f "$TARGET_DIR/.sdd/best_practices.md" ]]; then
