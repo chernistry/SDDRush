@@ -21,4 +21,4 @@ It is prompt-first, repo-aware, and intentionally light on ceremony because the 
 - Built-in research pack templates for probes, manifests, and closeouts under `.sdd/researches/`.
 - Clean fit for repos that want structure without building a religion around it.
 
-Built by Alex Chernysh — alex@hireex.ai
+Built by Alex Chernysh — alex@alexchernysh.com
